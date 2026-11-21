@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard - DrugTraceability</title>
+<meta name="description" content="Dashboard DrugTraceability sesuai role: registrasi batch, transfer custody, verifikasi, riwayat distribusi, dan recall.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Lewati ke konten utama</a>
+<header class="site-header" id="site-header"></header>
+
+<main id="main">
+  <section class="section" style="padding-top:30px">
+    <div class="container">
+
+      <div id="gate" class="hidden"></div>
+
+      <div id="app">
+        <div id="roleBanner"></div>
+        <div class="row mt-2" id="tabs" role="tablist" aria-label="Menu dashboard"></div>
+        <div id="tabBody" class="mt-2"></div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="vendor/ethers.umd.min.js"></script>
+<script src="abi/DrugTraceability.js"></script>
+<script src="contract-config.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>
