@@ -3,231 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DrugTraceability - Pelacakan Distribusi Obat Berbasis Blockchain</title>
-<meta name="description" content="Antarmuka web untuk smart contract DrugTraceability: registrasi batch obat, perpindahan custody, verifikasi keaslian, riwayat distribusi, dan penanganan recall.">
+<title>DrugTraceability - Pelacakan Distribusi Obat pada Blockchain</title>
+<meta name="description" content="Antarmuka web untuk smart contract DrugTraceability: pendaftaran batch obat, perpindahan custody, pemeriksaan keaslian, riwayat distribusi, dan penarikan batch bermasalah.">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Lewati ke konten utama</a>
-<header class="site-header" id="site-header"></header>
+<header id="site-header"></header>
 
 <main id="main">
 
-  <!-- ============================================================== HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="kicker">Purwarupa UAS Blockchain · Kelompok 4E</span>
-          <h1>Lacak perjalanan obat sampai ke pemegang terakhirnya.</h1>
-          <p class="lead">
-            Website ini adalah antarmuka untuk smart contract <span class="mono">DrugTraceability</span>.
-            Setiap registrasi batch, perpindahan custody, verifikasi, dan recall dijalankan sebagai
-            transaksi blockchain melalui wallet MetaMask Anda.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="verifikasi.html">Verifikasi kode batch</a>
-            <a class="btn ghost" href="panduan.html">Baca panduan penggunaan</a>
-          </div>
-          <p class="tiny faint mt-2 mb-0">
-            Tidak punya wallet? Halaman verifikasi bisa dibuka siapa saja tanpa menghubungkan wallet.
-          </p>
-        </div>
+  <section class="wrap pagehead">
+    <div class="row">
+      <div>
+        <p class="sub">Pencatatan distribusi obat pada ledger</p>
+        <h1>Setiap batch obat punya kartu stoknya sendiri</h1>
+      </div>
+      <div class="meta" id="pageMeta">Menghubungi jaringan…</div>
+    </div>
+    <p class="lead mt2">
+      Perjalanan obat dari pabrik sampai apotek dicatat sebagai transaksi pada blockchain,
+      sehingga tidak dapat diubah diam-diam dan dapat diperiksa siapa saja. Halaman ini adalah
+      antarmuka untuk menjalankannya: mencatat batch, memindahkan tanggung jawab, dan menarik
+      batch yang bermasalah.
+    </p>
+    <div class="row mt3">
+      <a class="btn solid" href="verifikasi.html">Periksa satu batch</a>
+      <a class="btn ghost" href="dashboard.html">Masuk ke ruang kerja</a>
+    </div>
+  </section>
 
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Tujuh langkah satu transaksi</h3>
-              <p class="sub">Alur yang sama dijalankan untuk setiap aksi pada sistem.</p>
-            </div>
-          </div>
-          <ol class="flow-list">
-            <li><span class="step">1</span><div><strong>Buka halaman sesuai peran</strong><span>Dashboard menampilkan menu yang diizinkan kontrak.</span></div></li>
-            <li><span class="step">2</span><div><strong>Hubungkan wallet MetaMask</strong><span>Wallet menjadi identitas alamat, bukan akun email.</span></div></li>
-            <li><span class="step">3</span><div><strong>Kontrak memeriksa role</strong><span>Hasil dibaca dari <span class="mono">roles(address)</span>.</span></div></li>
-            <li><span class="step">4</span><div><strong>Isi data yang diminta kontrak</strong><span>NIE, kode batch, tanggal, dan nomor serial.</span></div></li>
-            <li><span class="step">5</span><div><strong>Wallet meminta konfirmasi</strong><span>Biaya gas ditanggung pengirim transaksi.</span></div></li>
-            <li><span class="step">6</span><div><strong>Transaksi masuk ke blok</strong><span>Aturan kontrak menolak input yang tidak sah.</span></div></li>
-            <li><span class="step">7</span><div><strong>Hasil ditampilkan dari blockchain</strong><span>Tidak ada data contoh yang disamarkan sebagai data asli.</span></div></li>
-          </ol>
+  <section class="wrap mt4">
+    <dl class="tally" id="tally">
+      <div><dt>Batch tercatat</dt><dd>—</dd></div>
+      <div><dt>Berlaku</dt><dd>—</dd></div>
+      <div><dt>Recall</dt><dd>—</dd></div>
+      <div><dt>Aktor terdaftar</dt><dd>—</dd></div>
+      <div><dt>Blok terakhir</dt><dd>—</dd></div>
+    </dl>
+    <p class="tiny faint mt1 mb0">Angka di atas dibaca dari kontrak setiap halaman dimuat, bukan angka contoh.</p>
+  </section>
+
+  <section class="wrap cols mt4">
+    <div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <b>Kartu batch terakhir</b>
+          <span class="note">Batch bermasalah ditampilkan lebih dulu</span>
         </div>
+        <div class="sheet-body tight tscroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Kode batch</th>
+                <th>NIE</th>
+                <th>Status</th>
+                <th>Kedaluwarsa</th>
+                <th class="r">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="lastBody">
+              <tr><td colspan="5"><span class="skel" style="display:block;width:70%"></span></td></tr>
+              <tr><td colspan="5"><span class="skel" style="display:block;width:45%"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="head"><b>Cara memakainya</b></div>
+      <div class="body">
+        <ol class="track-list">
+          <li class="done"><span class="t">Periksa obat tanpa akun</span>
+            <span class="m">Masukkan NIE, kode batch, dan nomor serial dari kemasan</span></li>
+          <li class="done"><span class="t">Kerja dengan wallet</span>
+            <span class="m">Alamat wallet menentukan peran; kontrak yang membaca peran itu</span></li>
+          <li><span class="t">Ajukan peran bila belum ada</span>
+            <span class="m">BPOM yang mendaftarkan, bukan pengguna sendiri</span></li>
+        </ol>
+        <div class="note">
+          <b>Yang tidak bisa dilakukan halaman ini</b>
+          <p>Mengubah halaman web tidak melewati aturan kontrak. Batch yang sudah di-recall
+             tetap tidak dapat dipindahkan, sekalipun tampilan halaman diubah.</p>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="wrap mt4">
+    <div class="sheet">
+      <div class="sheet-head">
+        <b>Aturan yang diperiksa kontrak pada setiap transaksi</b>
+        <span class="note">15 pengujian otomatis, seluruhnya lulus</span>
+      </div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead>
+            <tr><th>Kondisi</th><th>Keterangan</th><th class="r">Hasil</th></tr>
+          </thead>
+          <tbody id="rulesBody">
+            <tr><td colspan="3"><span class="skel" style="display:block;width:60%"></span></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
 
-  <!-- ========================================================= CARA KERJA -->
-  <section class="section">
-    <div class="container">
-      <div class="metric-row metrics">
-        <div class="metric"><div class="label">Batch ID</div><div class="value">keccak256</div><div class="foot">Hash dari NIE + kode batch + nomor serial</div></div>
-        <div class="metric"><div class="label">Fungsi kontrak</div><div class="value">7</div><div class="foot">Semua dapat dipanggil dari website ini</div></div>
-        <div class="metric"><div class="label">Peran aktor</div><div class="value">4</div><div class="foot">Regulator, pabrik, distributor, apotek</div></div>
-        <div class="metric"><div class="label">Aturan yang diuji</div><div class="value">12</div><div class="foot">Skenario pengujian pada laporan UTS</div></div>
+  <section class="wrap mt4">
+    <div class="sheet">
+      <div class="sheet-head">
+        <b>Hak akses menurut peran</b>
+        <span class="note">Role tersimpan pada kontrak, dibaca saat halaman dimuat</span>
+      </div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead>
+            <tr><th style="width:20%">Peran</th><th style="width:40%">Kewenangan</th><th>Yang dapat dilakukan</th></tr>
+          </thead>
+          <tbody id="rolesBody">
+            <tr><td colspan="3"><span class="skel" style="display:block;width:55%"></span></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </section>
-
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div class="grid split">
-        <div>
-          <h2>Aturan distribusi dijalankan oleh kontrak, bukan oleh halaman web ini.</h2>
-          <p class="muted">
-            Website hanya menyiapkan data dan mengirim transaksi. Penolakan seperti batch yang sudah
-            di-recall, pengirim yang bukan pemegang batch, atau penerima yang belum terdaftar
-            berasal dari <span class="mono">require()</span> di dalam smart contract. Karena itu
-            halaman ini tidak dapat melewati aturan tersebut, sekalipun dimodifikasi.
-          </p>
-          <p class="muted mb-0">
-            Identitas batch dibentuk dari kombinasi tiga data sehingga satu kode batch tidak bisa
-            dipakai untuk dua produk berbeda.
-          </p>
-        </div>
-        <div class="panel">
-          <h3>Yang diperiksa kontrak setiap kali</h3>
-          <div class="table-wrap mt-1">
-            <table>
-              <thead><tr><th>Kondisi</th><th>Hasil</th></tr></thead>
-              <tbody>
-                <tr><td>Pemanggil tidak punya role yang diminta</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Tanggal kedaluwarsa lebih awal atau sama dengan produksi</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Batch sudah ditandai recall</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Pengirim bukan pemegang batch saat ini</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Penerima belum terdaftar sebagai aktor</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Recall kedua pada batch yang sama</td><td><span class="badge danger">Ditolak</span></td></tr>
-                <tr><td>Semua syarat terpenuhi</td><td><span class="badge ok">Dicatat di blockchain</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================== KATEGORI AKTOR -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <span class="kicker">Hak akses</span>
-        <h2>Satu halaman dashboard, empat tingkat kewenangan</h2>
-        <p>Role tersimpan di kontrak dan dibaca ulang setiap halaman dimuat. Tidak ada pengguna yang dapat memilih role untuk dirinya sendiri.</p>
-      </div>
-      <div class="role-grid">
-        <div class="role-card hl">
-          <h3>Regulator (BPOM) <span class="badge accent">Pendaftar aktor</span></h3>
-          <p class="small muted mb-0">Akun yang men-deploy kontrak otomatis menjadi regulator. Satu-satunya pihak yang dapat memanggil <span class="mono">registerActor()</span>.</p>
-          <ul>
-            <li>Mendaftarkan pabrik, distributor, dan apotek</li>
-            <li>Menandai batch bermasalah dengan <span class="mono">flagRecall()</span></li>
-            <li>Meninjau ringkasan jaringan dan permintaan pendaftaran</li>
-          </ul>
-        </div>
-        <div class="role-card">
-          <h3>Pabrik <span class="badge neutral">Manufacturer</span></h3>
-          <p class="small muted mb-0">Pihak yang mencatat batch baru ke ledger sekaligus menjadi pemegang pertamanya.</p>
-          <ul>
-            <li>Mendaftarkan batch dengan <span class="mono">registerBatch()</span></li>
-            <li>Menyerahkan custody ke distributor terdaftar</li>
-            <li>Dapat mengajukan recall atas batch produksinya</li>
-          </ul>
-        </div>
-        <div class="role-card">
-          <h3>Distributor <span class="badge neutral">PBF</span></h3>
-          <p class="small muted mb-0">Mata rantai antara pabrik dan fasilitas pelayanan kefarmasian.</p>
-          <ul>
-            <li>Melihat batch yang sedang menjadi tanggung jawabnya</li>
-            <li>Menerima dan meneruskan custody</li>
-            <li>Membuka riwayat perpindahan batch</li>
-          </ul>
-        </div>
-        <div class="role-card">
-          <h3>Apotek / Rumah Sakit <span class="badge neutral">Pharmacy</span></h3>
-          <p class="small muted mb-0">Titik akhir distribusi sebelum obat sampai ke pasien.</p>
-          <ul>
-            <li>Memeriksa status batch yang diterima</li>
-            <li>Melihat asal dan waktu setiap perpindahan</li>
-            <li>Melaporkan temuan ke regulator melalui halaman kontak</li>
-          </ul>
-        </div>
-      </div>
-      <p class="small faint mt-2 mb-0">
-        Pasien dan pengunjung umum tidak memerlukan role. Halaman verifikasi terbuka untuk siapa saja
-        karena hanya memanggil fungsi baca.
+    <div class="row mt2">
+      <p class="small muted mb0 grow">
+        Pasien dan pengunjung umum tidak memerlukan peran karena halaman Periksa Batch hanya
+        memanggil fungsi baca pada kontrak, dan itu terbuka untuk siapa saja.
       </p>
-    </div>
-  </section>
-
-  <!-- ======================================================= SKENARIO UJI -->
-  <section class="section">
-    <div class="container">
-      <div class="grid split">
-        <div>
-          <h2>Setiap klaim di halaman ini punya bukti ujinya</h2>
-          <p class="muted">
-            Dua belas skenario pada laporan UTS dijalankan ulang sebagai pengujian otomatis
-            (<span class="mono">npm test</span>) pada kontrak yang sama dengan yang dipakai website ini.
-            Tiga pengujian tambahan mencakup pendaftaran ganda, role kosong, dan batch yang tidak pernah ada.
-          </p>
-          <p class="muted mb-0">
-            Pengujian manual dengan beberapa akun wallet dilakukan terpisah, karena satu akun tidak cukup
-            untuk membuktikan pemisahan hak akses.
-          </p>
-          <div class="row mt-2">
-            <a class="btn ghost" href="panduan.html">Lihat langkah pengujian</a>
-          </div>
-        </div>
-        <div class="panel">
-          <h3>Hasil pengujian kontrak</h3>
-          <p class="sub">Dijalankan pada jaringan uji Hardhat lokal.</p>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th class="mono">Skenario</th><th>Kondisi</th><th>Hasil</th></tr></thead>
-              <tbody>
-                <tr><td class="mono">1</td><td>Regulator mendaftarkan aktor</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">2</td><td>Pabrik mendaftarkan batch valid</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">3</td><td>Non-pabrik mendaftarkan batch</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-                <tr><td class="mono">4</td><td>Kedaluwarsa sebelum produksi</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-                <tr><td class="mono">5</td><td>Transfer ke distributor terdaftar</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">6</td><td>Transfer oleh bukan pemegang</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-                <tr><td class="mono">7</td><td>Transfer ke aktor belum terdaftar</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-                <tr><td class="mono">8</td><td>Verifikasi batch terdaftar</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">9</td><td>Riwayat perpindahan ditampilkan</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">10</td><td>Recall oleh regulator atau pabrik</td><td><span class="badge ok">Lulus</span></td></tr>
-                <tr><td class="mono">11</td><td>Transfer batch yang sudah recall</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-                <tr><td class="mono">12</td><td>Recall ulang batch yang sudah recall</td><td><span class="badge ok">Ditolak sesuai aturan</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================================================================= CTA -->
-  <section class="section">
-    <div class="container">
-      <div class="panel" style="text-align:center; padding:36px 24px;">
-        <h2 class="mb-1">Mulai dari satu kode batch</h2>
-        <p class="muted" style="max-width:56ch;margin:0 auto 18px">
-          Masukkan NIE, kode batch, dan nomor serial dari kemasan. Hasilnya dibaca langsung dari
-          smart contract pada jaringan yang sedang terhubung.
-        </p>
-        <div class="row" style="justify-content:center">
-          <a class="btn primary" href="verifikasi.html">Buka halaman verifikasi</a>
-          <a class="btn ghost" href="daftar-aktor.html">Ajukan pendaftaran aktor</a>
-        </div>
-      </div>
+      <a class="btn ghost" href="panduan.html">Baca panduan pengujian</a>
     </div>
   </section>
 
 </main>
 
-<footer class="site-footer" id="site-footer"></footer>
+<footer class="foot" id="site-footer"></footer>
 
 <script src="vendor/ethers.umd.min.js"></script>
 <script src="abi/DrugTraceability.js"></script>
 <script src="contract-config.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/home.js"></script>
 <script>DT.boot("home");</script>
 </body>
 </html>

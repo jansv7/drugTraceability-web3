@@ -3,212 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pendaftaran Aktor - DrugTraceability</title>
-<meta name="description" content="Ajukan pendaftaran sebagai aktor rantai pasok farmasi pada sistem DrugTraceability. Pendaftaran resmi dijalankan oleh regulator melalui smart contract.">
+<title>Pengajuan Peran - DrugTraceability</title>
+<meta name="description" content="Ajukan pendaftaran sebagai aktor rantai pasok farmasi. Pendaftaran resmi dijalankan BPOM melalui smart contract.">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Lewati ke konten utama</a>
-<header class="site-header" id="site-header"></header>
+<header id="site-header"></header>
 
 <main id="main">
-  <section class="section" style="padding-top:34px">
-    <div class="container">
 
-      <div class="section-head" style="max-width:72ch">
-        <span class="kicker">Akses bertahap</span>
-        <h1 style="font-size:clamp(1.6rem,1.1rem+1.8vw,2.3rem)">Pendaftaran aktor rantai pasok</h1>
-        <p>
-          Sistem ini menggunakan model konsorsium: alamat wallet tidak dapat memilih role sendiri.
-          Kontrak hanya mengizinkan BPOM memanggil <span class="mono">registerActor()</span>, sehingga
-          pengajuan dilakukan lewat halaman ini dan ditindaklanjuti oleh regulator.
-        </p>
+  <section class="wrap pagehead">
+    <div class="row">
+      <div>
+        <p class="sub">Akses bertahap</p>
+        <h1>Pengajuan peran pada rantai pasok</h1>
       </div>
+      <div class="meta">Pendaftaran resmi oleh BPOM<br>bukan pilihan sendiri</div>
+    </div>
+    <p class="lead mt2">
+      Kontrak hanya mengizinkan BPOM memanggil <span class="mono">registerActor()</span>. Karena itu
+      pengguna mengajukan permintaan, lalu BPOM yang memeriksa dan menjalankan transaksinya. Formulir
+      di bawah tidak menulis apa pun ke blockchain.
+    </p>
+  </section>
 
-      <div class="grid split">
-        <!-- ------------------------------------------------------- FORMULIR -->
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Formulir pengajuan</h3>
-              <p class="sub">Data di bawah hanya dipakai untuk menyusun catatan pengajuan, bukan transaksi blockchain.</p>
-            </div>
-          </div>
-
+  <section class="wrap cols mt3">
+    <div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <b>Formulir pengajuan</b>
+          <span class="note">Catatan kerja, bukan transaksi</span>
+        </div>
+        <div class="sheet-body">
           <form id="fReq" novalidate>
             <div class="field">
               <label for="qInst">Nama instansi atau unit kerja</label>
               <input id="qInst" placeholder="Contoh: PT Kimia Farma Plant Cikarang" required>
-              <span class="hint">Isi nama pabrik, PBF, apotek, atau rumah sakit yang Anda wakili.</span>
+              <span class="hint">Nama pabrik, PBF, apotek, atau rumah sakit yang Anda wakili.</span>
               <span class="err">Nama instansi wajib diisi.</span>
             </div>
 
             <div class="field">
-              <label for="qRole">Role yang diajukan</label>
+              <label for="qRole">Peran yang diajukan</label>
               <select id="qRole">
-                <option value="1">Pabrik (Manufacturer) - mendaftarkan batch obat</option>
+                <option value="1">Pabrik (Manufacturer) - mencatat batch obat</option>
                 <option value="2">Distributor / PBF - menerima dan meneruskan custody</option>
-                <option value="3">Apotek / Rumah Sakit (Pharmacy) - penerima akhir distribusi</option>
+                <option value="3">Apotek / Rumah Sakit - penerima akhir distribusi</option>
               </select>
-              <span class="hint">Role Regulator tidak dapat diajukan melalui formulir ini.</span>
+              <span class="hint">Peran BPOM tidak dapat diajukan lewat formulir ini.</span>
             </div>
 
             <div class="field">
               <label for="qAddr">Alamat wallet Anda</label>
               <input id="qAddr" class="mono" placeholder="0x…" required>
-              <span class="hint">Alamat ini yang akan didaftarkan regulator. Gunakan alamat wallet yang benar-benar Anda kuasai.</span>
+              <span class="hint">Alamat inilah yang akan didaftarkan. Gunakan wallet yang benar-benar Anda kuasai.</span>
               <span class="err">Alamat wallet harus 0x diikuti 40 karakter heksadesimal.</span>
             </div>
 
             <div class="field">
               <label for="qNote">Keterangan tambahan (opsional)</label>
-              <textarea id="qNote" placeholder="Nomor izin edar, kontak resmi, atau catatan lain yang membantu verifikasi"></textarea>
+              <textarea id="qNote" placeholder="Nomor izin edar, kontak resmi, atau catatan yang membantu verifikasi"></textarea>
             </div>
 
             <div class="row">
-              <button class="btn primary" type="submit">Simpan pengajuan</button>
+              <button class="btn solid" type="submit">Simpan pengajuan</button>
               <button class="btn ghost" type="button" id="btnUseConnected">Pakai wallet yang terhubung</button>
             </div>
           </form>
 
-          <div class="notice tiny mt-2" id="reqNotice">
-            Pengajuan disimpan pada peramban ini (<span class="mono">localStorage</span>) sebagai catatan
-            kerja. Belum ada data yang masuk ke blockchain sampai regulator mengirim transaksi.
-          </div>
-        </div>
-
-        <!-- ----------------------------------------------------- STATUS/INFO -->
-        <div class="stack">
-          <div class="panel">
-            <h3>Status wallet Anda</h3>
-            <dl class="kv mt-1" id="myState">
-              <dt>Wallet</dt><dd>Belum terhubung</dd>
-              <dt>Jaringan</dt><dd>-</dd>
-              <dt>Role pada kontrak</dt><dd><span class="badge neutral">Belum terbaca</span></dd>
-            </dl>
-            <div class="row mt-2">
-              <button class="btn primary" id="btnConnectReq">Hubungkan MetaMask</button>
-              <a class="btn ghost" href="verifikasi.html">Verifikasi batch</a>
-            </div>
-          </div>
-
-          <div class="panel">
-            <h3>Pengajuan yang tersimpan di peramban ini</h3>
-            <ul id="myReqList" class="timeline mt-1"></ul>
-          </div>
-
-          <div class="panel">
-            <h3>Yang terjadi setelah pengajuan</h3>
-            <ol class="flow-list" style="font-size:.86rem">
-              <li><span class="step">1</span><div><strong>Regulator menerima data</strong><span>Nama instansi, role yang diajukan, dan alamat wallet.</span></div></li>
-              <li><span class="step">2</span><div><strong>Regulator memverifikasi</strong><span>Kelengkapan data dan kesesuaian dengan rantai pasok resmi.</span></div></li>
-              <li><span class="step">3</span><div><strong>Regulator mengirim transaksi</strong><span>Memanggil registerActor() dari wallet BPOM.</span></div></li>
-              <li><span class="step">4</span><div><strong>Wallet Anda mendapat role</strong><span>Dashboard otomatis menampilkan menu sesuai role tersebut.</span></div></li>
-            </ol>
+          <div class="note mt3" id="reqNotice">
+            <b>Belum tercatat di blockchain</b>
+            <p>Pengajuan disimpan pada peramban ini sebagai catatan kerja. Tidak ada yang masuk ke
+               ledger sampai BPOM mengirim transaksi <span class="mono">registerActor()</span>.</p>
           </div>
         </div>
       </div>
-
     </div>
+
+    <aside class="side">
+      <div class="head"><b>Status wallet Anda</b></div>
+      <div class="body">
+        <dl class="facts" id="myState">
+          <dt>Wallet</dt><dd>Belum terhubung</dd>
+          <dt>Jaringan</dt><dd>—</dd>
+          <dt>Peran</dt><dd><span class="seal mute"><i></i>belum terbaca</span></dd>
+        </dl>
+        <div class="row">
+          <button class="btn solid sm" id="btnConnectReq">Hubungkan wallet</button>
+          <a class="btn ghost sm" href="verifikasi.html">Periksa batch</a>
+        </div>
+      </div>
+
+      <div class="head" style="border-top:1px solid var(--rule)"><b>Pengajuan di peramban ini</b></div>
+      <div class="body">
+        <ul class="track-list" id="myReqList">
+          <li><span class="t muted">Belum ada pengajuan</span></li>
+        </ul>
+      </div>
+
+      <div class="head" style="border-top:1px solid var(--rule)"><b>Setelah pengajuan</b></div>
+      <div class="body">
+        <ol class="track-list">
+          <li><span class="t">BPOM menerima data</span><span class="m">Nama instansi, peran, alamat wallet</span></li>
+          <li><span class="t">BPOM memeriksa</span><span class="m">Kelengkapan dan kesesuaian dengan rantai pasok</span></li>
+          <li><span class="t">BPOM mengirim transaksi</span><span class="m">registerActor() dari wallet BPOM</span></li>
+          <li><span class="t">Wallet Anda beroleh peran</span><span class="m">Ruang kerja langsung menampilkan menunya</span></li>
+        </ol>
+      </div>
+    </aside>
   </section>
+
 </main>
 
-<footer class="site-footer" id="site-footer"></footer>
+<footer class="foot" id="site-footer"></footer>
 
 <script src="vendor/ethers.umd.min.js"></script>
 <script src="abi/DrugTraceability.js"></script>
 <script src="contract-config.js"></script>
 <script src="assets/js/app.js"></script>
-<script>
-(function () {
-  var S = DT.state;
-  DT.boot("register");
-
-  var f = document.getElementById("fReq");
-  var qInst = document.getElementById("qInst");
-  var qRole = document.getElementById("qRole");
-  var qAddr = document.getElementById("qAddr");
-  var qNote = document.getElementById("qNote");
-
-  function paintState() {
-    var dl = document.getElementById("myState");
-    var roleCell = !S.address
-      ? '<span class="badge neutral">Belum terbaca</span>'
-      : (Number(S.role) > 0 ? '<span class="badge ok">' + DT.roleLabel(S.role) + "</span>" : '<span class="badge warn">Belum terdaftar</span>');
-    dl.innerHTML =
-      "<dt>Wallet</dt><dd>" + (S.address ? '<span class="mono">' + DT.escapeHtml(S.address) + "</span>" : "Belum terhubung") + "</dd>" +
-      "<dt>Jaringan</dt><dd>" + (S.chainId ? (DT.NETWORK_LABEL[S.chainId] || "chainId " + S.chainId) : "-") + "</dd>" +
-      "<dt>Role pada kontrak</dt><dd>" + roleCell + "</dd>" +
-      "<dt>Kontrak</dt><dd class='mono wrap-any'>" +
-        (DT.configuredChainIds().length ? DT.contractConfigFor(DT.configuredChainIds()[0]).contractAddress : "belum dikonfigurasi") +
-      "</dd>";
-  }
-
-  function paintRequests() {
-    var list = DT.readRequests().slice().reverse();
-    var ul = document.getElementById("myReqList");
-    if (list.length === 0) {
-      ul.innerHTML = '<li class="small muted">Belum ada pengajuan tersimpan pada peramban ini.</li>';
-      return;
-    }
-    ul.innerHTML = list.map(function (r) {
-      return "<li><div class='tl-head'>" + DT.escapeHtml(r.institution) +
-        ' <span class="badge ' + (r.status === "terdaftar" ? "ok" : "warn") + '">' +
-        (r.status === "terdaftar" ? "Terdaftar" : "Menunggu") + "</span></div>" +
-        "<div class='tl-meta'>" + DT.roleLabel(r.role) + " · " + DT.shorten(r.address, 10, 8) + " · " +
-        DT.escapeHtml(new Date(r.createdAt).toLocaleString("id-ID")) + "</div></li>";
-    }).join("");
-  }
-
-  document.getElementById("btnConnectReq").addEventListener("click", async function () {
-    try {
-      await DT.connectWallet();
-      DT.toast("Wallet terhubung. Role dibaca dari kontrak.", "success");
-    } catch (e) {
-      DT.toast(DT.txError(e), "error");
-    }
-  });
-
-  document.getElementById("btnUseConnected").addEventListener("click", function () {
-    if (!S.address) { DT.toast("Hubungkan wallet lebih dulu.", "warn"); return; }
-    qAddr.value = DT.normAddr(S.address);
-  });
-
-  f.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var inst = qInst.value.trim();
-    var addr = qAddr.value.trim();
-    var markInst = !inst, markAddr = !DT.isAddr(addr);
-    qInst.parentElement.classList.toggle("invalid", markInst);
-    qAddr.parentElement.classList.toggle("invalid", markAddr);
-    if (markInst || markAddr) return;
-
-    var res = DT.addRequest({
-      institution: inst,
-      role: Number(qRole.value),
-      address: addr,
-      note: qNote.value.trim(),
-      createdAt: new Date().toISOString(),
-      status: "menunggu",
-    });
-    if (res.duplicate) {
-      DT.toast("Sudah ada pengajuan berstatus menunggu untuk alamat wallet ini.", "warn");
-      return;
-    }
-    var box = document.createElement("div");
-    box.innerHTML =
-      "Pengajuan tersimpan. Langkah berikutnya: kirimkan alamat wallet <span class='mono'>" +
-      DT.shorten(addr, 10, 8) + "</span> kepada petugas BPOM, lalu pengajuan dibuka pada halaman " +
-      "<a href='dashboard.html'>Permintaan pendaftaran</a> di peramban yang sama.";
-    DT.toast(box, "success", "Pengajuan dicatat");
-    f.reset();
-    paintRequests();
-  });
-
-  DT.onChange(paintState);
-  paintState();
-  paintRequests();
-})();
-</script>
+<script src="assets/js/pengajuan.js"></script>
+<script>DT.boot("register");</script>
 </body>
 </html>

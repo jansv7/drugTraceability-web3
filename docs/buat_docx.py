@@ -12,6 +12,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
+from PIL import Image
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(BASE, "LAPORAN_UAS.md")
@@ -165,12 +166,27 @@ def main():
     if os.path.isdir(IMG_DIR):
         doc.add_page_break()
         doc.add_heading("Lampiran: Tangkapan Layar Antarmuka", level=1)
+        doc.add_paragraph(
+            "Tangkapan layar di bawah diambil pada lebar 1440 piksel. Halaman yang isinya panjang "
+            "diperkecil agar muat satu halaman; berkas gambar ukuran penuh tersedia di folder "
+            "docs/gambar pada proyek."
+        )
         for name in sorted(os.listdir(IMG_DIR)):
             if not name.lower().endswith((".png", ".jpg", ".jpeg")):
                 continue
             label = os.path.splitext(name)[0].replace("-", " ")
+            path = os.path.join(IMG_DIR, name)
             doc.add_heading(label, level=3)
-            doc.add_picture(os.path.join(IMG_DIR, name), width=Inches(6.1))
+            # Halaman yang isinya panjang dibatasi tingginya, supaya lampiran tidak
+            # menghabiskan belasan halaman hanya untuk beberapa tangkapan layar.
+            with Image.open(path) as im:
+                w, h = im.size
+            width_in = 6.1
+            height_in = width_in * h / w
+            max_h = 7.6
+            if height_in > max_h:
+                width_in = max_h * w / h
+            doc.add_picture(path, width=Inches(width_in))
             doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
             doc.add_paragraph()
 

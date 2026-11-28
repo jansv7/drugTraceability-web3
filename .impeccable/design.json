@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-28T11:20:00.000Z",
+  "title": "Design System: DrugTraceability",
+  "extensions": {
+    "colorMeta": {
+      "moss": { "role": "primary", "displayName": "Lumut Arsip", "canonical": "#3a5741", "tonalRamp": ["#0d1410", "#16211a", "#1f2e24", "#283b2f", "#31483a", "#3a5741", "#7d9a85", "#cfe0d4"] },
+      "stamp": { "role": "tertiary", "displayName": "Stamp Penarikan", "canonical": "#8c2f24", "tonalRamp": ["#1a0908", "#330f0d", "#4c1612", "#661d17", "#7f251c", "#8c2f24", "#c47a70", "#efd2ce"] },
+      "ochre": { "role": "tertiary", "displayName": "Oker Tunggu", "canonical": "#7a5309", "tonalRamp": ["#170f02", "#2e1f04", "#452e06", "#5c3e07", "#6d4a08", "#7a5309", "#c39a55", "#eddfc2"] },
+      "paper": { "role": "neutral", "displayName": "Kertas Kartu", "canonical": "#f6f7f6", "tonalRamp": ["#2f3130", "#4b4e4c", "#676b68", "#838784", "#a0a4a1", "#bcc0bd", "#d9dcd9", "#f6f7f6"] },
+      "rail": { "role": "neutral", "displayName": "Rel Tindakan", "canonical": "#1f2a24", "tonalRamp": ["#0a0f0c", "#121a16", "#1f2a24", "#34443b", "#4a5e52", "#647a6c", "#93a79a", "#c9d5cd"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Judul halaman dan kepala kartu batch." },
+      "headline": { "displayName": "Headline", "purpose": "Judul bagian di dalam lembar." },
+      "body": { "displayName": "Body", "purpose": "Seluruh kalimat penjelas." },
+      "label": { "displayName": "Label", "purpose": "Kepala kolom, label formulir, nama bagian." },
+      "data": { "displayName": "Data Tabular", "purpose": "NIE, serial, alamat wallet, hash, tanggal ringkas, nomor blok." }
+    },
+    "shadows": [
+      { "name": "floating", "value": "0 10px 28px rgba(25, 25, 25, 0.13)", "purpose": "Hanya notifikasi dan dialog. Lembar data tidak pernah memakai bayangan." }
+    ],
+    "motion": [
+      { "name": "state", "value": "120ms ease-out", "purpose": "Perubahan warna dan tepi pada tombol, tautan, dan kolom isian." },
+      { "name": "entrance", "value": "160ms ease-out", "purpose": "Kemunculan notifikasi." }
+    ],
+    "breakpoints": [
+      { "name": "two-column-collapse", "value": "1080px" },
+      { "name": "nav-collapse", "value": "900px" },
+      { "name": "sheet-reflow", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Tombol Utama",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tindakan yang menambah atau memindahkan data pada ledger.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Kirim transaksi pencatatan</button>",
+      "css": ".ds-btn { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.79rem; font-weight: 620; letter-spacing: 0.07em; text-transform: uppercase; padding: 10px 18px; border: 1px solid; border-radius: 0; cursor: pointer; transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out; } .ds-btn:focus-visible { outline: 2px solid #3a5741; outline-offset: 2px; } .ds-btn-primary { background: #3a5741; border-color: #3a5741; color: #fff; } .ds-btn-primary:hover { background: #2d4433; border-color: #2d4433; } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Tombol Garis",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Tindakan sekunder; hover membalik menjadi latar tinta.",
+      "html": "<button class=\"ds-btn-ghost\">Buka kartu</button>",
+      "css": ".ds-btn-ghost { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.79rem; font-weight: 620; letter-spacing: 0.07em; text-transform: uppercase; padding: 10px 18px; border: 1px solid #c6cbc7; border-radius: 0; background: #f6f7f6; color: #191919; cursor: pointer; transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out; } .ds-btn-ghost:hover { background: #e6e9e7; border-color: #191919; } .ds-btn-ghost:focus-visible { outline: 2px solid #3a5741; outline-offset: 2px; }"
+    },
+    {
+      "name": "Tombol Bahaya",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Penarikan batch; tidak dapat dibatalkan setelah tercatat.",
+      "html": "<button class=\"ds-btn-danger\">Kirim transaksi penarikan</button>",
+      "css": ".ds-btn-danger { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.79rem; font-weight: 620; letter-spacing: 0.07em; text-transform: uppercase; padding: 10px 18px; border: 1px solid #8c2f24; border-radius: 0; background: #8c2f24; color: #fff; cursor: pointer; transition: background 120ms ease-out; } .ds-btn-danger:hover { background: #72241b; border-color: #72241b; } .ds-btn-danger:focus-visible { outline: 2px solid #3a5741; outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip Saringan",
+      "kind": "chip",
+      "refersTo": "chip-filter-active",
+      "description": "Menu ruang kerja dan saringan daftar; satu selalu aktif.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip is-on\">Batch saya</button><button class=\"ds-chip\">Catat batch</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.8rem; font-weight: 620; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 11px; border: 1px solid #c6cbc7; border-radius: 0; background: #f6f7f6; color: #191919; cursor: pointer; } .ds-chip:hover { background: #e6e9e7; border-color: #191919; } .ds-chip.is-on { background: #3a5741; border-color: #3a5741; color: #fff; }"
+    },
+    {
+      "name": "Kolom Isian",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Kolom formulir; angka dan tanggal dirender monospace.",
+      "html": "<label class=\"ds-field\"><span>NIE (nomor izin edar)</span><input class=\"ds-input ds-input-mono\" value=\"DKI123456789\"></label>",
+      "css": ".ds-field { display: grid; gap: 6px; } .ds-field span { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.8rem; font-weight: 640; color: #191919; } .ds-input { width: 100%; padding: 9px 11px; background: #fff; color: #191919; border: 1px solid #b8b3a1; border-radius: 0; font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.88rem; } .ds-input:focus { outline: 2px solid #3a5741; outline-offset: 1px; border-color: #3a5741; } .ds-input-mono { font-family: 'Azeret Mono', Consolas, monospace; font-size: 0.84rem; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Segel Status",
+      "kind": "chip",
+      "refersTo": "status-seal",
+      "description": "Penanda keadaan batch; teks selalu menyebut keadaannya, bukan warna saja.",
+      "html": "<span class=\"ds-seal ds-seal-ok\"><i></i>Berlaku</span> <span class=\"ds-seal ds-seal-bad\"><i></i>Recall</span> <span class=\"ds-seal ds-seal-warn\"><i></i>Kedaluwarsa</span>",
+      "css": ".ds-seal { display: inline-flex; align-items: center; gap: 7px; font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.8rem; font-weight: 680; letter-spacing: 0.09em; text-transform: uppercase; border: 1px solid currentColor; border-radius: 0; padding: 3px 8px; white-space: nowrap; } .ds-seal i { width: 6px; height: 6px; background: currentColor; display: block; } .ds-seal-ok { color: #3a5741; } .ds-seal-bad { color: #8c2f24; } .ds-seal-warn { color: #7a5309; }"
+    },
+    {
+      "name": "Lembar Kartu Stok",
+      "kind": "card",
+      "refersTo": "record-sheet",
+      "description": "Wadah utama: garis kepala 2px, kepala bilah abu, badan, tabel mutasi.",
+      "html": "<section class=\"ds-sheet\"><header class=\"ds-sheet-head\"><b>Kartu batch</b><span>Batch bermasalah ditampilkan lebih dulu</span></header><div class=\"ds-sheet-body\"><p>Isi kartu: identitas batch, riwayat mutasi masuk dan keluar, saldo pemegang, nomor blok.</p></div></section>",
+      "css": ".ds-sheet { background: #f6f7f6; border: 1px solid #c6cbc7; border-top: 2px solid #191919; border-radius: 0; } .ds-sheet-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 10px 16px; background: #e6e9e7; border-bottom: 1px solid #c6cbc7; } .ds-sheet-head b { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 680; color: #191919; } .ds-sheet-head span { margin-left: auto; font-family: 'Azeret Mono', Consolas, monospace; font-size: 0.8rem; color: #5d5a52; } .ds-sheet-body { padding: 20px 16px; } .ds-sheet-body p { margin: 0; font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.55; color: #5d5a52; }"
+    },
+    {
+      "name": "Kaki Tanda Tangan",
+      "kind": "custom",
+      "description": "Tiga kolom berisi alamat wallet, nama modifier kontrak, dan jumlah perpindahan.",
+      "html": "<div class=\"ds-signs\"><div><b>Diisi</b><span>0x709979…79C8</span></div><div><b>Diperiksa</b><span>onlyRole</span></div><div><b>Disetujui</b><span>2 perpindahan</span></div></div>",
+      "css": ".ds-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #c6cbc7; border-radius: 0; } .ds-signs > div { padding: 10px 14px 20px; border-right: 1px solid #c6cbc7; } .ds-signs > div:last-child { border-right: 0; } .ds-signs b { display: block; font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: #5d5a52; margin-bottom: 4px; font-weight: 680; } .ds-signs span { display: block; font-family: 'Azeret Mono', Consolas, monospace; font-size: 0.8rem; color: #191919; overflow-wrap: anywhere; }"
+    },
+    {
+      "name": "Bilah Masa Edar",
+      "kind": "custom",
+      "description": "Bagian masa edar yang sudah terpakai, dengan penanda hari ini.",
+      "html": "<div class=\"ds-gauge\"><div class=\"ds-gauge-labels\"><span>Masa edar terpakai 4%</span><span>sisa 730 hari</span></div><div class=\"ds-gauge-track\"><div class=\"ds-gauge-fill\" style=\"width:4%\"></div><div class=\"ds-gauge-today\" style=\"left:4%\"></div></div></div>",
+      "css": ".ds-gauge { font-family: Archivo, 'Segoe UI', system-ui, sans-serif; } .ds-gauge-labels { display: flex; justify-content: space-between; font-family: 'Azeret Mono', Consolas, monospace; font-size: 0.8rem; color: #5d5a52; margin-bottom: 5px; } .ds-gauge-track { position: relative; height: 8px; background: #e6e9e7; border: 1px solid #c6cbc7; border-radius: 0; } .ds-gauge-fill { position: absolute; inset: 0 auto 0 0; background: #3a5741; } .ds-gauge-today { position: absolute; top: -5px; bottom: -5px; width: 2px; background: #191919; }"
+    },
+    {
+      "name": "Daftar Jejak Berhenti",
+      "kind": "custom",
+      "description": "Langkah kerja dan riwayat custody; titik terisi berarti sudah dilalui.",
+      "html": "<ul class=\"ds-track\"><li class=\"is-done\"><span class=\"t\">Pabrik mencatat batch</span><span class=\"m\">blok 5 · 29 Okt 2026</span></li><li><span class=\"t\">Diserahkan ke distributor</span><span class=\"m\">belum terjadi</span></li></ul>",
+      "css": ".ds-track { list-style: none; margin: 0; padding: 0; } .ds-track li { position: relative; padding: 0 0 14px 22px; border-left: 1px solid #c6cbc7; } .ds-track li:last-child { padding-bottom: 0; border-left-color: transparent; } .ds-track li::before { content: \"\"; position: absolute; left: -4px; top: 5px; width: 7px; height: 7px; background: #eef0ee; border: 1.5px solid #3a5741; } .ds-track li.is-done::before { background: #3a5741; } .ds-track .t { display: block; font-family: Archivo, 'Segoe UI', system-ui, sans-serif; font-size: 0.83rem; font-weight: 620; color: #191919; line-height: 1.35; } .ds-track .m { display: block; font-family: 'Azeret Mono', Consolas, monospace; font-size: 0.79rem; color: #5d5a52; margin-top: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Kartu Stok Apotek",
+    "overview": "Sistem ini meniru satu benda yang sudah dikenal siapa pun yang pernah bekerja di gudang atau apotek: lembar kartu stok. Ia punya kepala berisi identitas barang, badan berisi kolom mutasi masuk dan keluar dengan saldo pemegang, kaki berisi kolom tanda tangan, dan satu segel tanggal kedaluwarsa yang ditempel miring di sudut. Seluruh halaman adalah lembar itu, bukan halaman pemasaran.",
+    "keyCharacteristics": [
+      "Satu arah visual: lembar kartu stok dengan kepala, kolom mutasi, dan kaki tanda tangan.",
+      "Angka tabular monospace sebagai warga kelas satu; NIE, serial, alamat, hash, dan nomor blok selalu sejajar.",
+      "Warna sebagai makna, bukan hiasan: lumut aman, stamp bahaya, oker tunggu.",
+      "Sudut 0px di seluruh komponen, satu skala bentuk.",
+      "Bidang gelap hanya satu: rel tindakan di kepala halaman."
+    ],
+    "rules": [
+      { "name": "The Meaning Rule", "body": "Sebuah warna semantik hanya muncul bila ada keadaannya. Halaman tanpa batch recall tidak menampilkan satu pun piksel merah.", "section": "colors" },
+      { "name": "The One Dark Field Rule", "body": "Hanya rel tindakan yang boleh berupa bidang gelap. Kartu, tabel, panel samping, dan dialog seluruhnya terang.", "section": "colors" },
+      { "name": "The Tabular Rule", "body": "Setiap angka yang dibandingkan antar baris memakai monospace dengan font-variant-numeric: tabular-nums. Angka proporsional dilarang pada tabel dan daftar fakta.", "section": "typography" },
+      { "name": "The No-Smallprint Rule", "body": "Tidak ada teks fungsional di bawah 0.75rem (12px). Huruf mungil yang hanya bertahan karena terlihat rapi membuat halaman ini tidak terbaca dari baris belakang kelas.", "section": "typography" },
+      { "name": "The Flat Sheet Rule", "body": "Lembar data tidak pernah melayang. Kalau sebuah elemen perlu terlihat terpisah, tambahkan satu garis atau ubah tingkat kertasnya, jangan tambahkan bayangan.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do pakai monospace dengan lebar digit tetap untuk seluruh angka, alamat, dan hash.",
+      "Do bedakan status dengan teks plus warna, jangan warna saja.",
+      "Do tampilkan sebab dari setiap penolakan kontrak apa adanya, karena itulah bukti utama bagi penguji.",
+      "Do taruh angka yang dibaca dari kontrak sedekat mungkin dengan keterangan sumbernya.",
+      "Do pertahankan sudut 0px dan garis 1px sebagai satu-satunya sistem bentuk."
+    ],
+    "donts": [
+      "Don't menambahkan sudut membulat, gradasi, atau bayangan pada lembar data.",
+      "Don't menampilkan larik angka yang tidak dibaca dari kontrak, termasuk angka contoh sebagai pengganti.",
+      "Don't memakai krem hangat, serif, atau aksen ungu: ketiganya membawa halaman ke tampilan template.",
+      "Don't memakai warna selain lumut sebagai aksen, atau stamp untuk hal yang bukan bahaya.",
+      "Don't menaruh teks fungsional di bawah 12px, sekalipun tampak lebih rapi.",
+      "Don't menyembunyikan perbedaan hak akses di balik pesan peringatan saja; menu yang bukan kewenangan pengguna tidak dibangun."
+    ]
+  }
+}

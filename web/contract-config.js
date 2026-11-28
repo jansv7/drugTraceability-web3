@@ -6,6 +6,6 @@ window.DRUGTRACE_CONFIG = {
     "network": "localhost",
     "rpcUrl": "http://127.0.0.1:8545",
     "deployBlock": 1,
-    "deployedAt": "2026-11-21T04:57:34.365Z"
+    "deployedAt": "2026-11-28T13:53:41.306Z"
   }
 };

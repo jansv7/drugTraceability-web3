@@ -265,7 +265,7 @@ solusinya ditempatkan pada sisi antarmuka atau dokumentasi.
 | 2 | Perencanaan: struktur halaman, navigasi per role, alur pengguna | Selesai |
 | 3 | Pembangunan antarmuka: beranda, koneksi wallet, pemeriksaan role, dashboard, verifikasi publik | Selesai |
 | 4 | Integrasi kontrak: ABI, alamat per jaringan, pemanggilan baca dan tulis, penanganan error | Selesai |
-| 5 | Pengujian: 15 pengujian kontrak dan 15 skenario antarmuka dengan beberapa akun | Selesai |
+| 5 | Pengujian: 15 pengujian kontrak dan 9 pemeriksaan antarmuka dengan beberapa akun | Selesai |
 | 6 | Deployment dan dokumentasi: konfigurasi jaringan, panduan, laporan | Selesai untuk lokal; Sepolia dan publikasi perlu keputusan dosen |
 
 Keputusan yang masih menunggu arahan dosen, sesuai bagian 9 panduan: apakah website wajib online,

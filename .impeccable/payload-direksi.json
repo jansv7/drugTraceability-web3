@@ -1,0 +1,131 @@
+{
+  "title": "Pilih bahasa visual untuk DrugTraceability",
+  "question": "Sistem lama dipakai apa adanya: semua jiwa operasionalnya (warna sebagai makna, tanda segel, angka identitas, jejak perjalanan) tetap dipertahankan, tapi tiga sumber utamanya baru saya tambahkan. Yang berubah nanti: halaman jadi bersih dan terang, tanpa mode gelap, dan ada halaman baru bernama Periksa Batch. Tiga usulan terkuat ada di bawah bersama satu usulan pilihan saya. Kandidat yang saya tolak tetap ditampilkan kecil di bawah, dan tiga usulan lain (katalog pameran, katalog piringan hitam, teletext siaran) menunggu di antrean kalau kamu minta undian baru.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Rak & Label Apotek",
+      "kicker": "THE ROLL",
+      "lineage": "label kertas apotek dan papan rak gudang farmasi",
+      "thesis": "Setiap batch adalah satu label: identitasnya tipografis dan angkanya tabular, statusnya segel stempel, dan riwayat perjalanannya tergantung di sisi papan sebagai jalur berhenti bernomor.",
+      "palette": ["#16324f", "#f2f1ec", "#fffefb", "#1c6b4c", "#b8312a", "#9a6410"],
+      "materials": ["kertas label", "tinta segel", "papan rak bergaris"],
+      "viewport": "Rel gelap setinggi satu baris di atas, satu judul besar rata kiri (bukan hero tengah), baris fakta bernomor kontrak di kanan, papan rak bergaris lalu tabel batch: kode batch tebal, NIE dan serial tabular, status sebagai segel bulat berisi teks, batch recall dengan bilah merah tipis. Panel kanan berisi timbunan kertas 'jejak custody' bernomor berhenti.",
+      "risk": "Kalau tipografinya diset malu-malu, bahasanya bisa terbaca sebagai nostalgia pos, bukan sebagai alat kerja yang tegas.",
+      "raised": [
+        { "from": "challenger-transit", "raise": "Jejak custody di panel kanan kini bernomor berhenti seperti urutan stasiun, jadi jumlah perpindahan terbaca sekali lihat." },
+        { "from": "challenger-gateboard", "raise": "Tabel batch mendapat bilah sorot merah tipis dan penanda 'baru dicatat' di kiri baris, jadi perubahan terakhir kelihatan tanpa harus membaca ulang." },
+        { "from": "challenger-variable-font", "raise": "Angka NIE, serial, dan nomor blok memakai lebar digit tetap (tabular) dan dipisah dari teks dengan jarak lebih renggang, jadi angka panjang terbaca sebagai angka, bukan kalimat." }
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "Kartu Stok Batch",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "kartu stok gudang dan buku besar apotek",
+      "thesis": "Riwayat sebuah batch diperlakukan sebagai kartu stok resmi: kolom masuk, keluar, dan saldo pemegang, ditutup tiga kolom tanda tangan 'diisi, diperiksa, disetujui' yang isinya alamat dan nomor blok.",
+      "palette": ["#fbfaf5", "#191919", "#3a5741", "#8c2f24"],
+      "materials": ["kertas buku besar", "tinta stempel", "garis kolom satu titik"],
+      "viewport": "Kepala kartu: nama batch dalam ukuran besar, segel tanggal kedaluwarsa miring sedikit di kanan. Tabel mutasi dengan kolom masuk/keluar/saldo dan nomor blok paling kanan. Blok tanda tangan di bawah tabel memuat alamat wallet, modifier kontrak, dan hash transaksi. Panel kanan: identitas batch, bilah masa berlaku dengan penanda hari ini, catatan recall.",
+      "risk": "Ini arah yang paling sering dipilih di kategori ini: orang sudah tahu rasanya buku besar, jadi aman tapi kurang mengejutkan.",
+      "html": ".impeccable/mocks/decision/pick.html"
+    },
+    {
+      "id": "challenger-transit",
+      "kind": "challenger",
+      "catalogId": "wayfinding-cartography-signage-midnight-transit-diagram",
+      "label": "Peta Jalur Distribusi",
+      "verdict": "competitive",
+      "lineage": "peta jalur angkutan umum berenamel biru tengah malam",
+      "thesis": "Rantai pasok diperlakukan sebagai jaringan angkutan: tiap aktor satu stasiun, tiap perpindahan custody satu ruas garis yang membelok hanya pada sudut 45 dan 90 derajat, dan batch yang di-recall punya stasiun karantina sendiri.",
+      "palette": ["#101d3a", "#f4f6fa", "#e0403a", "#2f6ee0", "#f0a92c", "#2e9e63"],
+      "materials": ["enamel biru tengah malam", "garis berwarna", "lingkaran timah"],
+      "viewport": "Peta besar mengisi dua pertiga kiri: garis biru jalur custody dari pabrik ke gudang PBF ke apotek, cabang merah berujung stasiun karantina berlabel RECALL, garis kuning turun ke BPOM sebagai pengawas. Tiga papan informasi di bawah memuat hitungan batch. Panel kanan: perjalanan batch sebagai tiga ruas bernomor, ditutup dua tombol.",
+      "case": "Kategori jelas dan paling tepat menjawab pertanyaan penguji 'bagaimana kamu mengatur ini nanti'. Yang dikorbankan: satu tabel padat berisi sepuluh batch akan terbaca seperti peta yang macet, jadi arah ini paling kuat kalau daftar batch selalu pendek.",
+      "risk": "Grafiknya harus digambar dari data kontrak, bukan dari gambar statis, supaya tidak jadi kostum peta di halaman kerja.",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-midnight-transit-diagram-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-transit.html"
+    },
+    {
+      "id": "challenger-gateboard",
+      "kind": "challenger",
+      "catalogId": "vernacular-ephemera-boarding-pass-and-gate-board",
+      "label": "Papan Batch Masuk",
+      "verdict": "competitive",
+      "lineage": "papan gerbang keberangkatan bandara dan potongan kartu masuk",
+      "thesis": "Daftar batch diperlakukan sebagai papan gerbang: diurutkan oleh tanggal kedaluwarsa, bukan oleh urutan pencatatan, dan baris yang baru berubah tetap menyala sampai kamu melihatnya.",
+      "palette": ["#1c2024", "#f0efeb", "#b3261e", "#2b5d8a"],
+      "materials": ["papan logam dicat", "tiket karton berlubang robekan"],
+      "viewport": "Baris kolom: kedaluwarsa paling kiri dalam angka besar, lalu batch, pemegang kini, asal, status, jumlah perpindahan. Baris yang baru berubah memakai latar merah pucat dengan bilah merah di sisi kiri. Panel kanan: dua bagian kartu batch yang dipisah garis putus-putus, memuat blok kode bergaya batang, lalu langkah perjalanan.",
+      "case": "Paling dekat dengan kebiasaan kerja nyata: orang yang memegang obat memang berpikir urut kedaluwarsa. Sepuluh batch pun tetap terbaca. Risikonya arah ini paling mudah berubah jadi dashboard biasa kalau bilah merah dan kartu robekan dihapus.",
+      "risk": "Tanpa disiplin warna isyarat, papan ini jatuh jadi tabel kelabu dengan satu tombol biru.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-gateboard.html"
+    },
+    {
+      "id": "challenger-variable-font",
+      "kind": "challenger",
+      "catalogId": "variable-font-specimen",
+      "label": "Spesimen Angka & Kode",
+      "verdict": "competitive",
+      "lineage": "lembar spesimen huruf dan angka cetak",
+      "thesis": "Data batch yang paling menentukan justru yang paling panjang dan paling mudah salah dibaca, jadi arah ini menaruh perhatian utama pada angka: NIE, nomor serial, alamat wallet, dan hash transaksi.",
+      "palette": ["#f8f7f4", "#141414", "#0f6b63"],
+      "materials": ["kertas spesimen", "tinta hitam", "penggaris skala"],
+      "viewport": "Contoh hash Batch ID ditampilkan sangat besar di kepala halaman dengan skala nilai di bawahnya, lalu deretan batch memakai lebar digit tetap sehingga koma dan titiknya sejajar dari baris ke baris. Panel kanan: identitas batch dengan penggaris masa berlaku. Panel kecil: entri kode bergaya daftar, panjang hash dan nomor blok bisa dibandingkan.",
+      "case": "Menjawab satu masalah nyata yang sudah ada sekarang: angka panjang yang sekarang gampang salah baca. Tapi kalau hanya bagian angka yang dikerjakan, sisanya balik jadi halaman biasa, jadi arah ini berisiko dikerjakan separuh.",
+      "risk": "Bahaya utamanya jadi halaman pamer huruf, bukan alat kerja. Daftar batch tetap harus terbaca cepat.",
+      "hero": "https://impeccable.style/worlds/cards/variable-font-specimen-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-variable-font.html"
+    },
+    {
+      "id": "challenger-doujin",
+      "kind": "challenger",
+      "catalogId": "pop-culture-shelf-doujin-event-catalog",
+      "label": "Katalog Meja Nomor",
+      "verdict": "declined",
+      "kept": "Kepadatan grid: sel tabel berukuran sama yang dirapatkan tanpa sisa ruang, dan penandaan baris yang sudah pernah dibuka.",
+      "case": "Kalah pada kejelasan produk. Bahasa buku katalog pameran menuntut pengunjung menjelajah, sedangkan yang dibutuhkan di sini adalah satu batch dipanggil lalu diputuskan.",
+      "risk": "Terbaca seperti katalog acara, bukan alat kerja.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-doujin-event-catalog-hero.webp"
+    },
+    {
+      "id": "challenger-saville",
+      "kind": "challenger",
+      "catalogId": "brand-identity-canon-saville-catalog-sleeve",
+      "label": "Kode Warna & Nomor Katalog",
+      "verdict": "declined",
+      "kept": "Keberanian bidang gelap: satu rel gelap yang menentukan seluruh halaman dan ruang kosong hitam yang luas membentuk ketenangan.",
+      "case": "Kalah pada kejelasan produk. Nama aktor diganti strip warna berkode hanya lucu sekali; sesudah itu orang harus menghafal kode untuk pekerjaan yang sudah punya nama jelas.",
+      "risk": "Berubah jadi pamer gaya yang memaksa pengguna belajar kode ciptaan sendiri.",
+      "hero": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve-hero.webp"
+    },
+    {
+      "id": "challenger-rail",
+      "kind": "challenger",
+      "catalogId": "rw-centre-rail-reference-setting",
+      "label": "Rel Tengah Bernomor",
+      "verdict": "declined",
+      "kept": "Rel tengah sebagai satu-satunya bagian yang bergerak: satu lajur tipis berisi kunci nomor di antara dua kolom isi, yang berpindah posisi saat layar menyempit.",
+      "case": "Kalah pada kejelasan produk. Dua kolom teks rapat dengan rel di tengah bagus untuk naskah yang dibaca berurutan, tetapi tabel batch dan form registrasi butuh lebar penuh, bukan kolom sempit.",
+      "risk": "Kalau dipaksakan, tabel batch pecah jadi dua kolom sempit yang justru lebih sulit dibanding sekarang.",
+      "hero": "https://impeccable.style/worlds/cards/rw-centre-rail-reference-setting-hero.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code" },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "Standar kategori",
+    "thesis": "Yang biasanya dikirim di kategori ini, dikerjakan rapi: latar putih, satu warna biru, kartu sudut membulat, ikon garis, dan hero di tengah.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["grid bersih", "kartu membulat"],
+    "viewport": "Hero ikut tengah dengan judul dan tombol, di bawahnya tiga kartu fitur sejajar, lalu satu bagian tangkapan layar.",
+    "risk": "Tidak bisa dibedakan dari proyek mahasiswa lain, karena memang disengaja begitu."
+  },
+  "steer": true
+}

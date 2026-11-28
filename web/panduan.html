@@ -3,248 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panduan Penggunaan - DrugTraceability</title>
-<meta name="description" content="Cara menyiapkan MetaMask, menghubungkan wallet, mencoba setiap role, dan menguji skenario UAS DrugTraceability.">
+<title>Panduan Penggunaan dan Pengujian - DrugTraceability</title>
+<meta name="description" content="Cara menyiapkan MetaMask, mencoba setiap peran, dan menguji skenario UAS DrugTraceability.">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Lewati ke konten utama</a>
-<header class="site-header" id="site-header"></header>
+<header id="site-header"></header>
 
 <main id="main">
-  <section class="section" style="padding-top:34px">
-    <div class="container">
 
-      <div class="section-head" style="max-width:74ch">
-        <span class="kicker">Untuk dosen dan penguji</span>
-        <h1 style="font-size:clamp(1.6rem,1.1rem+1.8vw,2.3rem)">Panduan penggunaan dan pengujian</h1>
-        <p>
-          Seluruh langkah di bawah sudah dijalankan pada kontrak yang sama dengan yang dipakai website ini.
-          Tidak ada data contoh yang disamarkan sebagai data blockchain.
-        </p>
+  <section class="wrap pagehead">
+    <div class="row">
+      <div>
+        <p class="sub">Untuk dosen penguji dan tim</p>
+        <h1>Panduan penggunaan dan pengujian</h1>
       </div>
+      <div class="meta">Semua langkah di bawah<br>sudah dijalankan pada<br>kontrak yang sama</div>
+    </div>
+    <p class="lead mt2">
+      Halaman ini menjelaskan cara menjalankan aplikasi, mencoba setiap peran, dan memeriksa
+      bahwa aturan smart contract benar-benar berlaku. Tidak ada data contoh yang disamarkan
+      sebagai data blockchain.
+    </p>
+  </section>
 
-      <!-- ================================================== 1. SIAPKAN -->
-      <div class="grid split">
-        <div class="panel">
-          <h2 style="font-size:1.15rem">1. Menyiapkan jaringan dan wallet</h2>
-          <p class="small muted">
-            Website dapat dibuka langsung sebagai berkas lokal maupun melalui server statis. Pembacaan
-            data verifikasi bekerja pada keduanya. Transaksi dari halaman yang dibuka lewat
-            <span class="mono">file://</span> bergantung pada kebijakan peramban; bila MetaMask tidak
-            muncul, jalankan server statis di folder <span class="mono">web</span>.
-          </p>
-          <div class="table-wrap mt-1">
-            <table>
-              <thead><tr><th>Langkah</th><th>Perintah atau tindakan</th></tr></thead>
-              <tbody>
-                <tr><td>1</td><td>Jalankan node lokal: <span class="mono">npx hardhat node</span> pada folder proyek.</td></tr>
-                <tr><td>2</td><td>Deploy kontrak ke jaringan tersebut: <span class="mono">npm run deploy:local</span>.</td></tr>
-                <tr><td>3</td><td>Perintah itu menulis <span class="mono">web/abi/DrugTraceability.js</span> dan <span class="mono">web/contract-config.js</span> secara otomatis.</td></tr>
-                <tr><td>4</td><td>Jalankan server statis: <span class="mono">npm run web</span>, lalu buka alamat yang ditampilkan.</td></tr>
-                <tr><td>5</td><td>Di MetaMask, tambahkan jaringan <em>Hardhat Local</em> dengan RPC <span class="mono">http://127.0.0.1:8545</span> dan chainId <span class="mono">31337</span>.</td></tr>
-                <tr><td>6</td><td>Impor akun uji memakai private key yang dicetak oleh <span class="mono">npx hardhat node</span> pada terminal.</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="notice warn tiny mt-2">
-            Private key pada node lokal hanya untuk pengujian. Jangan pernah memakai akun utama atau
-            menyimpan seed phrase di dalam berkas proyek.
-          </div>
-          <p class="small muted mt-2 mb-0">
-            Untuk jaringan uji publik, isi variabel pada berkas <span class="mono">.env</span> lalu jalankan
-            <span class="mono">npm run deploy:sepolia</span>. Panduan lengkapnya ada di
-            <span class="mono">docs/DEPLOY.md</span>.
-          </p>
-        </div>
-
-        <div class="stack">
-          <div class="panel">
-            <h3>Akun uji yang disarankan</h3>
-            <p class="sub">Pengujian beberapa pengguna membutuhkan lebih dari satu wallet.</p>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Akun node lokal</th><th>Peran dalam demo</th></tr></thead>
-                <tbody>
-                  <tr><td class="mono">#0</td><td>BPOM / Regulator (deployer kontrak)</td></tr>
-                  <tr><td class="mono">#1</td><td>Pabrik (Manufacturer)</td></tr>
-                  <tr><td class="mono">#2</td><td>Distributor</td></tr>
-                  <tr><td class="mono">#3</td><td>Apotek / Rumah Sakit (Pharmacy)</td></tr>
-                  <tr><td class="mono">#4</td><td>Pengguna belum terdaftar (uji penolakan)</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="panel">
-            <h3>Perintah penting</h3>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Perintah</th><th>Kegunaan</th></tr></thead>
-                <tbody>
-                  <tr><td class="mono">npm install</td><td>Memasang dependensi Hardhat dan ethers</td></tr>
-                  <tr><td class="mono">npm test</td><td>Menjalankan 15 pengujian kontrak</td></tr>
-                  <tr><td class="mono">npm run node</td><td>Menjalankan node blockchain lokal</td></tr>
-                  <tr><td class="mono">npm run deploy:local</td><td>Deploy ke node lokal</td></tr>
-                  <tr><td class="mono">npm run deploy:sepolia</td><td>Deploy ke Sepolia Testnet</td></tr>
-                  <tr><td class="mono">npm run web</td><td>Server statis untuk folder web</td></tr>
-                  <tr><td class="mono">npm run seed:local</td><td>Mengisi data contoh lengkap pada node lokal</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+  <!-- ============================================================ 1. SETUP -->
+  <section class="wrap mt4">
+    <div class="sheet">
+      <div class="sheet-head"><b>1. Menyiapkan jaringan dan wallet</b><span class="note">Sekali saja</span></div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead><tr><th style="width:60px">Langkah</th><th>Perintah atau tindakan</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1</td><td>Jalankan node blockchain lokal, biarkan terbuka: <span class="mono">npm run node</span></td></tr>
+            <tr><td class="mono">2</td><td>Terminal kedua, deploy kontrak: <span class="mono">npm run deploy:local</span></td></tr>
+            <tr><td class="mono">3</td><td>Perintah itu menulis ulang <span class="mono">web/abi/DrugTraceability.js</span> dan <span class="mono">web/contract-config.js</span></td></tr>
+            <tr><td class="mono">4</td><td>Isi data contoh untuk demonstrasi: <span class="mono">npm run seed:local</span></td></tr>
+            <tr><td class="mono">5</td><td>Jalankan server statis: <span class="mono">npm run web</span>, lalu buka alamat yang dicetak</td></tr>
+            <tr><td class="mono">6</td><td>Di MetaMask tambah jaringan: RPC <span class="mono">http://127.0.0.1:8545</span>, chainId <span class="mono">31337</span></td></tr>
+            <tr><td class="mono">7</td><td>Impor akun uji memakai private key yang dicetak <span class="mono">npm run node</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-body" style="border-top:1px solid var(--rule)">
+        <div class="note warn">
+          <b>Hanya untuk pengujian</b>
+          <p>Private key node lokal tidak boleh dipakai untuk akun asli. Berkas proyek tidak
+             menyimpan kunci apa pun, dan antarmuka tidak pernah meminta seed phrase.</p>
         </div>
       </div>
-
-      <!-- ============================================ 2. COBA TIAP ROLE -->
-      <div class="section" style="border-top:0;padding-top:36px">
-        <div class="section-head">
-          <h2 style="font-size:1.15rem">2. Mencoba setiap role</h2>
-          <p>Urutan ini mengikuti alur distribusi obat dari pabrik sampai apotek.</p>
-        </div>
-
-        <div class="role-grid">
-          <div class="role-card hl">
-            <h3>Regulator <span class="badge accent">akun #0</span></h3>
-            <ol class="small muted" style="padding-left:18px;margin:0">
-              <li>Buka <a href="dashboard.html">Dashboard</a> dan hubungkan akun #0.</li>
-              <li>Buka tab <em>Aktor rantai pasok</em>, masukkan alamat akun #1, pilih Pabrik, kirim transaksi.</li>
-              <li>Ulangi untuk akun #2 sebagai Distributor dan akun #3 sebagai Apotek.</li>
-              <li>Buka tab <em>Recall batch</em> untuk menandai batch bermasalah.</li>
-              <li>Tab <em>Permintaan pendaftaran</em> menampilkan pengajuan dari pengguna lain pada peramban yang sama.</li>
-            </ol>
-          </div>
-          <div class="role-card">
-            <h3>Pabrik <span class="badge neutral">akun #1</span></h3>
-            <ol class="small muted" style="padding-left:18px;margin:0">
-              <li>Hubungkan akun #1. Dashboard menampilkan menu Pabrik.</li>
-              <li>Tab <em>Registrasi batch</em>: isi NIE, kode batch, tanggal, dan nomor serial, lalu kirim.</li>
-              <li>Catat Batch ID yang muncul pada panel pratinjau.</li>
-              <li>Tab <em>Transfer custody</em>: pilih batch, isi alamat akun #2, kirim transaksi.</li>
-            </ol>
-          </div>
-          <div class="role-card">
-            <h3>Distributor <span class="badge neutral">akun #2</span></h3>
-            <ol class="small muted" style="padding-left:18px;margin:0">
-              <li>Hubungkan akun #2. Batch yang baru diterima muncul di tab <em>Batch yang saya pegang</em>.</li>
-              <li>Periksa detail batch untuk melihat riwayat perpindahan.</li>
-              <li>Teruskan custody ke akun #3 melalui tab <em>Transfer custody</em>.</li>
-            </ol>
-          </div>
-          <div class="role-card">
-            <h3>Apotek / pasien <span class="badge neutral">akun #3 atau tanpa wallet</span></h3>
-            <ol class="small muted" style="padding-left:18px;margin:0">
-              <li>Hubungkan akun #3 untuk melihat batch yang diterima.</li>
-              <li>Gunakan <a href="verifikasi.html">Verifikasi Obat</a> tanpa wallet untuk memeriksa batch.</li>
-              <li>Masukkan NIE, kode batch, dan nomor serial untuk melihat status dan seluruh riwayat.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================================================ 3. SKENARIO UJI -->
-      <div class="section" style="border-top:0;padding-top:36px">
-        <div class="section-head">
-          <h2 style="font-size:1.15rem">3. Daftar periksa pengujian manual</h2>
-          <p>Setiap baris di bawah dapat diverifikasi langsung melalui antarmuka website.</p>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang diharapkan</th></tr></thead>
-            <tbody>
-              <tr><td class="mono">1</td><td>Wallet belum terhubung</td><td>Buka Dashboard tanpa wallet</td><td>Tombol hubungkan muncul, menu tidak ditampilkan</td></tr>
-              <tr><td class="mono">2</td><td>Jaringan salah</td><td>Pindahkan MetaMask ke jaringan lain</td><td>Peringatan jaringan muncul, transaksi dinonaktifkan</td></tr>
-              <tr><td class="mono">3</td><td>Wallet belum ber-role</td><td>Hubungkan akun #4</td><td>Layar pengajuan pendaftaran, bukan dashboard</td></tr>
-              <tr><td class="mono">4</td><td>Registrasi aktor</td><td>Regulator memberi role akun #1</td><td>Role terbaca sebagai Pabrik pada akun #1</td></tr>
-              <tr><td class="mono">5</td><td>Pendaftaran batch valid</td><td>Pabrik mengisi formulir dengan benar</td><td>Notifikasi berhasil, Batch ID muncul</td></tr>
-              <tr><td class="mono">6</td><td>Tanggal tidak valid</td><td>Isi kedaluwarsa lebih awal dari produksi</td><td>Peringatan pada formulir, transaksi tidak dikirim</td></tr>
-              <tr><td class="mono">7</td><td>Duplikat batch</td><td>Daftarkan kombinasi yang sama dua kali</td><td>Transaksi gagal dengan pesan kontrak "sudah terdaftar"</td></tr>
-              <tr><td class="mono">8</td><td>Transfer sah</td><td>Pabrik mengirim batch ke akun #2</td><td>Pemegang berubah, riwayat bertambah</td></tr>
-              <tr><td class="mono">9</td><td>Transfer oleh bukan pemegang</td><td>Kirim transfer dengan akun lain</td><td>Ditolak dengan pesan "bukan pemegang batch"</td></tr>
-              <tr><td class="mono">10</td><td>Penerima belum terdaftar</td><td>Kirim transfer ke akun #4</td><td>Peringatan pada kolom alamat, transaksi ditolak</td></tr>
-              <tr><td class="mono">11</td><td>Recall oleh bukan pihak berwenang</td><td>Akun distributor mencoba recall</td><td>Menu recall tidak tersedia bagi distributor</td></tr>
-              <tr><td class="mono">12</td><td>Transfer batch recall</td><td>Recall lalu coba transfer</td><td>Ditolak dengan pesan "berstatus recall"</td></tr>
-              <tr><td class="mono">13</td><td>Recall dua kali</td><td>Recall batch yang sama dua kali</td><td>Ditolak dengan pesan "sudah berstatus recall"</td></tr>
-              <tr><td class="mono">14</td><td>Transaksi dibatalkan</td><td>Tolak permintaan pada MetaMask</td><td>Notifikasi "transaksi dibatalkan pada wallet"</td></tr>
-              <tr><td class="mono">15</td><td>Riwayat lengkap</td><td>Verifikasi batch setelah dua transfer</td><td>Timeline menampilkan seluruh perpindahan</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ================================================= 4. BATASAN -->
-      <div class="section" style="border-top:0;padding-top:36px">
-        <div class="grid split">
-          <div class="panel">
-            <h2 style="font-size:1.15rem">4. Batasan yang jujur perlu disebut</h2>
-            <ul class="small muted" style="padding-left:18px">
-              <li>Kontrak dijalankan pada jaringan uji, bukan mainnet maupun blockchain permissioned Hyperledger.</li>
-              <li>Pendaftaran aktor tetap hanya dapat dilakukan regulator. Tidak ada fitur pemilihan role mandiri.</li>
-              <li>Permintaan pendaftaran disimpan pada peramban (<span class="mono">localStorage</span>), bukan pada ledger. Ini catatan kerja, bukan fitur blockchain.</li>
-              <li>Daftar batch disusun dari event kontrak. Bila daftar berkas event node lokal dibersihkan atau kontrak di-deploy ulang, riwayat daftar mulai dari nol sementara data lama tetap ada di blok sebelumnya.</li>
-              <li>Belum ada integrasi langsung dengan sistem BPOM maupun pemindai 2D barcode resmi.</li>
-              <li>Fungsi <span class="mono">verifyAuthenticity()</span> membuktikan batch terdaftar pada ledger, bukan membuktikan keaslian fisik produk.</li>
-            </ul>
-          </div>
-          <div class="panel">
-            <h2 style="font-size:1.15rem">5. Pemecahan masalah</h2>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Gejala</th><th>Penyebab dan tindakan</th></tr></thead>
-                <tbody>
-                  <tr><td>Tombol hubungkan tidak muncul</td><td>Ekstensi MetaMask belum terpasang. Pasang lalu muat ulang halaman.</td></tr>
-                  <tr><td>Peringatan jaringan tidak dikenal</td><td>Wallet berada pada chainId berbeda dari kontrak. Gunakan tombol pindah jaringan.</td></tr>
-                  <tr><td>Verifikasi gagal membaca</td><td>Node lokal belum berjalan. Jalankan <span class="mono">npx hardhat node</span>.</td></tr>
-                  <tr><td>Transaksi gagal dengan "nonce"</td><td>Bersihkan aktivitas akun di MetaMask: Pengaturan lanjutan, Clear activity tab data.</td></tr>
-                  <tr><td>Daftar batch kosong padahal ada</td><td>Blok deployment berubah karena kontrak di-deploy ulang. Pindai ulang melalui tombol pada tab batch.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================= 6. API KONTRAK -->
-      <div class="section" style="border-top:0;padding-top:36px">
-        <div class="section-head">
-          <h2 style="font-size:1.15rem">6. Fungsi kontrak yang dipakai antarmuka</h2>
-          <p>Nama fungsi dan parameter pada daftar ini sama persis dengan berkas Solidity proyek UTS.</p>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Fungsi</th><th>Pemanggil yang diizinkan</th><th>Digunakan pada halaman</th></tr></thead>
-            <tbody>
-              <tr><td class="mono">registerActor(address, Role)</td><td>Regulator saja</td><td>Dashboard, tab Aktor rantai pasok</td></tr>
-              <tr><td class="mono">registerBatch(string,string,uint256,uint256,string)</td><td>Manufacturer</td><td>Dashboard, tab Registrasi batch</td></tr>
-              <tr><td class="mono">transferCustody(bytes32,address)</td><td>Pemegang batch saat ini</td><td>Dashboard, tab Transfer custody</td></tr>
-              <tr><td class="mono">verifyAuthenticity(bytes32)</td><td>Siapa saja</td><td>Verifikasi Obat</td></tr>
-              <tr><td class="mono">getTransferHistory(bytes32)</td><td>Siapa saja</td><td>Verifikasi Obat dan detail batch</td></tr>
-              <tr><td class="mono">flagRecall(bytes32,string)</td><td>Regulator atau Manufacturer</td><td>Dashboard, tab Recall batch</td></tr>
-              <tr><td class="mono">computeBatchId(string,string,string)</td><td>Siapa saja</td><td>Verifikasi Obat dan registrasi batch</td></tr>
-              <tr><td class="mono">batches(bytes32) / roles(address) / regulator()</td><td>Siapa saja</td><td>Seluruh halaman untuk pembacaan data</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="small muted mt-2 mb-0">
-          Ringkasan arsitektur dan hasil audit proyek ada pada dokumen <span class="mono">docs/LAPORAN_UAS.md</span>,
-          tersedia juga dalam bentuk <span class="mono">.docx</span> agar tim dapat merevisinya.
-        </p>
-      </div>
-
-      <div class="row mt-3">
-        <a class="btn primary" href="verifikasi.html">Mulai verifikasi batch</a>
-        <a class="btn ghost" href="dashboard.html">Buka dashboard</a>
-      </div>
-
     </div>
   </section>
+
+  <!-- ========================================================== 2. AKUN -->
+  <section class="wrap cols mt3">
+    <div class="sheet">
+      <div class="sheet-head"><b>Akun uji yang disarankan</b><span class="note">Pengujian butuh lebih dari satu wallet</span></div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead><tr><th>Akun node</th><th>Peran dalam demo</th><th>Penyiapan</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">#0</td><td>BPOM (Regulator)</td><td class="small muted">Otomatis jadi regulator saat kontrak di-deploy</td></tr>
+            <tr><td class="mono">#1</td><td>Pabrik</td><td class="small muted">Sudah didaftarkan data contoh</td></tr>
+            <tr><td class="mono">#2</td><td>Distributor</td><td class="small muted">Sudah didaftarkan data contoh</td></tr>
+            <tr><td class="mono">#3</td><td>Apotek / Rumah Sakit</td><td class="small muted">Sudah didaftarkan data contoh</td></tr>
+            <tr><td class="mono">#4</td><td>Belum berperan</td><td class="small muted">Untuk menguji penolakan dan pengajuan</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="head"><b>Perintah penting</b></div>
+      <div class="body">
+        <dl class="facts">
+          <dt>npm test</dt><dd>15 pengujian kontrak</dd>
+          <dt>npm run node</dt><dd>Node blockchain lokal</dd>
+          <dt>deploy:local</dt><dd>Deploy ke node lokal</dd>
+          <dt>seed:local</dt><dd>Isi data contoh</dd>
+          <dt>npm run web</dt><dd>Server statis</dd>
+          <dt>deploy:sepolia</dt><dd>Deploy ke Sepolia</dd>
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================================================= 3. FUNGSI KONTRAK -->
+  <section class="wrap mt4">
+    <div class="sheet">
+      <div class="sheet-head">
+        <b>3. Fungsi kontrak yang dipakai antarmuka</b>
+        <span class="note">Nama dan parameter sama dengan berkas Solidity proyek UTS</span>
+      </div>
+      <div class="sheet-body tight tscroll">
+        <table id="fnTable">
+          <thead><tr><th>Fungsi</th><th>Pemanggil yang diizinkan</th><th>Halaman</th><th class="r">Untuk Anda</th></tr></thead>
+          <tbody>
+            <tr data-roles="4"><td class="mono">registerActor(address, Role)</td><td>Regulator saja</td><td>Ruang Kerja · Aktor</td><td class="r"><span class="seal ok hidden" data-mine><i></i>sesuai</span></td></tr>
+            <tr data-roles="1"><td class="mono">registerBatch(string,string,uint256,uint256,string)</td><td>Manufacturer</td><td>Ruang Kerja · Catat batch</td><td class="r"><span class="seal ok hidden" data-mine><i></i>sesuai</span></td></tr>
+            <tr data-roles="1,2,3"><td class="mono">transferCustody(bytes32,address)</td><td>Pemegang batch saat ini</td><td>Ruang Kerja · Pindahkan custody</td><td class="r"><span class="seal ok hidden" data-mine><i></i>sesuai</span></td></tr>
+            <tr data-roles="0,1,2,3,4"><td class="mono">verifyAuthenticity(bytes32)</td><td>Siapa saja</td><td>Periksa Batch</td><td class="r"><span class="seal mute"><i></i>terbuka</span></td></tr>
+            <tr data-roles="0,1,2,3,4"><td class="mono">getTransferHistory(bytes32)</td><td>Siapa saja</td><td>Periksa Batch · Kartu batch</td><td class="r"><span class="seal mute"><i></i>terbuka</span></td></tr>
+            <tr data-roles="1,4"><td class="mono">flagRecall(bytes32,string)</td><td>Regulator atau Manufacturer</td><td>Ruang Kerja · Tarik batch</td><td class="r"><span class="seal ok hidden" data-mine><i></i>sesuai</span></td></tr>
+            <tr data-roles="0,1,2,3,4"><td class="mono">computeBatchId(string,string,string)</td><td>Siapa saja</td><td>Periksa Batch · Catat batch</td><td class="r"><span class="seal mute"><i></i>terbuka</span></td></tr>
+            <tr data-roles="0,1,2,3,4"><td class="mono">batches() · roles() · regulator()</td><td>Siapa saja</td><td>Seluruh halaman</td><td class="r"><span class="seal mute"><i></i>terbuka</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-body" style="border-top:1px solid var(--rule)">
+        <p class="small muted mb0">Baris yang bertanda <span class="seal ok"><i></i>sesuai</span> adalah fungsi yang
+          akan berhasil bila dijalankan wallet Anda yang sedang terhubung.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== 4. SKENARIO -->
+  <section class="wrap mt4">
+    <div class="sheet">
+      <div class="sheet-head">
+        <b>4. Daftar periksa pengujian manual</b>
+        <span class="note">Diambil dari kriteria keberhasilan pada panduan UAS</span>
+      </div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead><tr><th style="width:52px">No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang diharapkan</th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="color:var(--moss)">01</td><td>Wallet belum terhubung</td><td>Buka Ruang Kerja tanpa wallet</td><td class="small muted">Ajakan menghubungkan wallet, menu tidak tampil</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">02</td><td>Jaringan tidak sesuai</td><td>Pindahkan MetaMask ke jaringan lain</td><td class="small muted">Peringatan jaringan, transaksi dinonaktifkan</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">03</td><td>Wallet belum berperan</td><td>Hubungkan akun #4</td><td class="small muted">Layar pengajuan peran, bukan ruang kerja</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">04</td><td>Registrasi aktor</td><td>BPOM memberi peran kepada akun #1</td><td class="small muted">Peran terbaca pada akun #1</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">05</td><td>Pencatatan batch sah</td><td>Pabrik mengisi formulir dengan benar</td><td class="small muted">Notifikasi berhasil, Batch ID muncul</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">06</td><td>Tanggal tidak sah</td><td>Kedaluwarsa lebih awal dari produksi</td><td class="small muted">Formulir menolak sebelum dikirim</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">07</td><td>Pencatatan ganda</td><td>Catat kombinasi NIE/batch/serial yang sama</td><td class="small muted">Ditolak kontrak: sudah terdaftar</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">08</td><td>Perpindahan sah</td><td>Pabrik mengirim ke akun #2</td><td class="small muted">Pemegang berubah, riwayat bertambah</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">09</td><td>Bukan pemegang</td><td>Kirim perpindahan dengan akun lain</td><td class="small muted">Ditolak: bukan pemegang batch saat ini</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">10</td><td>Penerima belum terdaftar</td><td>Kirim ke akun #4</td><td class="small muted">Peringatan pada kolom alamat, transaksi ditolak</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">11</td><td>Tarik oleh bukan pihak berwenang</td><td>Distributor membuka menu Tarik</td><td class="small muted">Menu tidak tersedia bagi distributor</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">12</td><td>Pindah batch recall</td><td>Tarik lalu coba pindahkan</td><td class="small muted">Ditolak: berstatus recall</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">13</td><td>Tarik dua kali</td><td>Tarik batch yang sama lagi</td><td class="small muted">Ditolak: sudah berstatus recall</td></tr>
+            <tr><td class="mono" style="color:var(--stamp)">14</td><td>Transaksi dibatalkan</td><td>Tolak permintaan di MetaMask</td><td class="small muted">Notifikasi transaksi dibatalkan pada wallet</td></tr>
+            <tr><td class="mono" style="color:var(--moss)">15</td><td>Riwayat lengkap</td><td>Periksa batch setelah dua perpindahan</td><td class="small muted">Tabel mutasi menampilkan seluruh perpindahan</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== 5. BATASAN + PERSOALAN -->
+  <section class="wrap cols mt4">
+    <div class="sheet">
+      <div class="sheet-head"><b>5. Batasan yang perlu disebut apa adanya</b></div>
+      <div class="sheet-body">
+        <ul class="small muted" style="padding-left:18px;margin:0">
+          <li>Kontrak dijalankan pada jaringan uji, bukan mainnet maupun blockchain permissioned.</li>
+          <li>Pendaftaran aktor tetap hanya dapat dilakukan regulator.</li>
+          <li>Permintaan peran disimpan pada peramban dan ditandai jelas sebagai catatan kerja, bukan ledger.</li>
+          <li>Daftar batch disusun dari event kontrak; nomor blok deployment disimpan pada konfigurasi.</li>
+          <li>Belum ada integrasi langsung dengan sistem BPOM maupun pemindai 2D barcode resmi.</li>
+          <li><span class="mono">verifyAuthenticity()</span> membuktikan batch terdaftar pada ledger, bukan keaslian fisik produk.</li>
+          <li>Kontrak mengizinkan pabrik menarik batch pabrik lain; antarmuka memperingatkan hal ini, perbaikan kontrak menunggu persetujuan dosen.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sheet">
+      <div class="sheet-head"><b>6. Bila ada yang tidak berjalan</b></div>
+      <div class="sheet-body tight tscroll">
+        <table>
+          <thead><tr><th>Gejala</th><th>Tindakan</th></tr></thead>
+          <tbody>
+            <tr><td class="small">Tombol hubungkan tidak muncul</td><td class="small muted">MetaMask belum terpasang. Pasang lalu muat ulang.</td></tr>
+            <tr><td class="small">Peringatan jaringan tidak sesuai</td><td class="small muted">Gunakan tombol pindah jaringan, atau tambah jaringan manual.</td></tr>
+            <tr><td class="small">Pemeriksaan gagal membaca</td><td class="small muted">Node lokal belum berjalan: <span class="mono">npm run node</span>.</td></tr>
+            <tr><td class="small">Transaksi gagal dengan nonce</td><td class="small muted">MetaMask: Pengaturan, Lanjutan, Clear activity tab data.</td></tr>
+            <tr><td class="small">Daftar batch kosong</td><td class="small muted">Kontrak di-deploy ulang, blok deployment berubah. Muat ulang halaman.</td></tr>
+            <tr><td class="small">Port 8545 sudah dipakai</td><td class="small muted">Masih ada node lama; matikan prosesnya lalu jalankan lagi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap mt4">
+    <div class="row">
+      <a class="btn solid" href="verifikasi.html">Mulai periksa batch</a>
+      <a class="btn ghost" href="dashboard.html">Buka ruang kerja</a>
+    </div>
+    <p class="small muted mt2 mb0">
+      Dokumen pendukung: hasil audit pada <span class="mono">docs/AUDIT.md</span>, panduan deployment
+      pada <span class="mono">docs/DEPLOY.md</span>, laporan UAS pada
+      <span class="mono">docs/LAPORAN_UAS.docx</span>, dan alur demo pada
+      <span class="mono">docs/ALUR_DEMO.md</span>.
+    </p>
+  </section>
+
 </main>
 
-<footer class="site-footer" id="site-footer"></footer>
+<footer class="foot" id="site-footer"></footer>
 
 <script src="vendor/ethers.umd.min.js"></script>
 <script src="abi/DrugTraceability.js"></script>
 <script src="contract-config.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/home.js"></script>
 <script>DT.boot("guide");</script>
 </body>
 </html>

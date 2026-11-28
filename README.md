@@ -14,8 +14,14 @@ Tugas: UAS Blockchain, Kelompok 4E Informatika, Universitas Singaperbangsa Karaw
 | `contracts/` | Smart contract Solidity proyek UTS (`DrugTypes.sol`, `DrugAccessControl.sol`, `DrugTraceability.sol`) |
 | `test/` | 15 pengujian otomatis kontrak, mencakup 12 skenario pada laporan UTS |
 | `scripts/` | Skrip deploy, pengisian data contoh, server statis, uji server |
-| `web/` | Aplikasi web: 5 halaman, gaya, skrip, ABI, dan konfigurasi kontrak |
-| `docs/` | Panduan deployment, laporan UAS, dan tangkapan layar |
+| `web/` | Aplikasi web: 5 halaman, gaya, skrip, huruf lokal, ABI, dan konfigurasi kontrak |
+| `docs/` | Panduan deployment, laporan UAS, alur demo, dan tangkapan layar |
+| `DESIGN.md` | Sistem desain: token warna, huruf, tata letak, dan aturan tampilan |
+
+Tampilan memakai satu arah visual: **kartu stok apotek**. Setiap catatan batch adalah lembar kartu
+stok dengan kepala identitas, tabel mutasi masuk/keluar/saldo, nomor blok pada setiap baris, dan kaki
+tiga kolom tanda tangan. Tema terang saja, sudut 0px, tanpa bayangan pada lembar data, dan seluruh
+angka memakai huruf monospace berlebar digit tetap. Aturan lengkapnya ada pada `DESIGN.md`.
 
 Halaman aplikasi:
 
@@ -90,6 +96,9 @@ yang baru saja di-deploy: `web/abi/DrugTraceability.js` dan `web/contract-config
 | `npm run seed:local` | Mengisi aktor, batch, perpindahan custody, dan satu batch recall |
 | `npm run deploy:sepolia` | Deploy ke Sepolia Testnet (butuh berkas `.env`, lihat `docs/DEPLOY.md`) |
 | `npm run web` | Menjalankan server statis untuk folder `web` pada port 5173 |
+
+Huruf Archivo dan Azeret Mono disajikan dari folder `web/assets/fonts/`, bukan diambil dari internet,
+sehingga demo tetap berjalan tanpa koneksi.
 
 ---
 

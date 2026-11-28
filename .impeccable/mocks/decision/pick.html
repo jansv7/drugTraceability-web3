@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>Kartu Stok Obat</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --paper:#fbfaf5; --ink:#191919; --ink2:#5d5a52; --rule:#cfcab9;
+    --stamp:#8c2f24; --moss:#3a5741;
+    --sans:"Bahnschrift","DIN Alternate","Segoe UI",system-ui,sans-serif;
+    --num:"Cascadia Mono",Consolas,monospace;
+  }
+  body{width:1440px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:13.5px}
+  header{border-bottom:2px solid var(--ink);padding:16px 40px 0}
+  .row1{display:flex;align-items:baseline;gap:16px}
+  h1{font-size:22px;letter-spacing:.01em;font-weight:640}
+  .fac{font-family:var(--num);font-size:12px;color:var(--ink2)}
+  .top-actions{margin-left:auto;display:flex;gap:22px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+  .top-actions b{color:var(--ink);font-weight:660}
+  .row2{display:flex;gap:34px;padding:10px 0 12px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink2)}
+  .row2 .on{color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:4px}
+  main{display:grid;grid-template-columns:1fr 336px;height:812px}
+  .sheet{padding:26px 40px 0}
+  .card-head{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1px solid var(--ink);padding-bottom:8px}
+  .card-head .t{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
+  .card-head h2{font-size:26px;font-weight:630;letter-spacing:-.01em;margin-top:3px}
+  .stamp{font-family:var(--num);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stamp);
+    border:2px solid var(--stamp);padding:5px 9px;transform:rotate(-1.4deg);white-space:nowrap}
+  table{width:100%;border-collapse:collapse;margin-top:2px}
+  th{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink2);font-weight:640;
+    text-align:left;padding:10px 8px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:8px;border-bottom:1px solid var(--rule);font-size:13px}
+  td.n{font-family:var(--num);font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
+  td.n.l{text-align:left}
+  tbody tr:hover td{background:#f4f1e6}
+  .saldo{font-weight:700}
+  .sign{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--rule);margin-top:20px}
+  .sign div{padding:10px 12px 26px;border-right:1px solid var(--rule)}
+  .sign div:last-child{border-right:0}
+  .sign b{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink2)}
+  .sign span{font-size:12px;display:block;margin-top:3px}
+  .foot{margin-top:14px;font-size:11px;color:var(--ink2);display:flex;justify-content:space-between}
+  aside{border-left:1px solid var(--rule);padding:26px 28px 0;background:#f6f4ec}
+  aside h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin-bottom:14px}
+  .kv{display:grid;grid-template-columns:104px 1fr;gap:7px 10px;font-size:12.5px}
+  .kv dt{color:var(--ink2);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-top:1px}
+  .kv dd{font-family:var(--num);font-size:12px}
+  .bar{margin-top:22px}
+  .bar .track{height:7px;background:#e4e0d1;position:relative;border:1px solid var(--rule)}
+  .bar .fill{position:absolute;inset:0 26% 0 0;background:var(--moss)}
+  .bar .needle{position:absolute;top:-4px;bottom:-4px;left:74%;width:2px;background:var(--ink)}
+  .bar .ticks{display:flex;justify-content:space-between;font-family:var(--num);font-size:9.5px;color:var(--ink2);margin-top:5px}
+  .quote{margin-top:22px;border-left:3px solid var(--stamp);padding-left:11px;font-size:12.5px;line-height:1.55}
+  .quote b{display:block;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--stamp);margin-bottom:4px}
+</style></head><body>
+<header>
+  <div class="row1"><h1>DrugTraceability</h1><span class="fac">KARTU STOK / F-01</span>
+    <div class="top-actions"><span><b>0x7099…79C8</b> PABRIK</span><span>HARDHAT LOCAL</span></div></div>
+  <div class="row2"><span class="on">Kartu stok</span><span>Registrasi</span><span>Perpindahan</span>
+    <span>Recall</span><span>Aktor</span><span>Log blok</span></div>
+</header>
+<main>
+  <div class="sheet">
+    <div class="card-head">
+      <div><div class="t">Kartu stok batch</div><h2>PARA-2026-001</h2></div>
+      <div class="stamp">Berlaku s/d 20 Nov 2028</div>
+    </div>
+    <table>
+      <thead><tr><th style="width:88px">Tanggal</th><th>Uraian mutasi</th><th>Masuk</th><th>Keluar</th><th>Saldo pemegang</th><th class="n">Blok</th></tr></thead>
+      <tbody>
+        <tr><td class="n l">21-11-26</td><td>Didaftarkan pabrik · NIE DKI123456789 · SN-PR-0001</td>
+          <td class="n">1</td><td class="n">–</td><td class="n l saldo">Pabrik 0x7099</td><td class="n">12</td></tr>
+        <tr><td class="n l">21-11-26</td><td>Serah terima ke distributor</td>
+          <td class="n">–</td><td class="n">1</td><td class="n l saldo">Distributor 0x3C44</td><td class="n">13</td></tr>
+        <tr><td class="n l">21-11-26</td><td>Diteruskan ke apotek</td>
+          <td class="n">–</td><td class="n">1</td><td class="n l saldo">Apotek 0x90F7</td><td class="n">13</td></tr>
+        <tr><td class="n l" style="color:#8c2f24">—</td><td style="color:#8c2f24">Tidak ada mutasi berikutnya. Batch tidak dapat dipindahkan.</td>
+          <td class="n">–</td><td class="n">–</td><td class="n l">–</td><td class="n">–</td></tr>
+      </tbody>
+    </table>
+    <div class="sign">
+      <div><b>Diisi</b><span>Pabrik · 0x7099…79C8</span></div>
+      <div><b>Diperiksa</b><span>Kontrak · modifier onlyRole</span></div>
+      <div><b>Disetujui</b><span>Blok 13 · tx 0x967e…e0a</span></div>
+    </div>
+    <div class="foot"><span>Saldo dicatat sebagai pemegang sah pada ledger, bukan saldo jumlah fisik.</span>
+      <span>Halaman 1 dari 1</span></div>
+  </div>
+  <aside>
+    <h3>Identitas batch</h3>
+    <dl class="kv">
+      <dt>NIE</dt><dd>DKI123456789</dd>
+      <dt>Kode batch</dt><dd>PARA-2026-001</dd>
+      <dt>Serial</dt><dd>SN-PR-0001</dd>
+      <dt>Produksi</dt><dd>22-10-2026</dd>
+      <dt>Kedaluwarsa</dt><dd>20-11-2028</dd>
+      <dt>Batch ID</dt><dd style="font-size:10.5px;word-break:break-all">0xb36414a5…1156ff4a</dd>
+    </dl>
+    <div class="bar">
+      <h3 style="margin-bottom:8px">Masa berlaku</h3>
+      <div class="track"><div class="fill"></div><div class="needle"></div></div>
+      <div class="ticks"><span>22-10-26</span><span>hari ini</span><span>20-11-28</span></div>
+    </div>
+    <div class="quote"><b>Catatan recall</b>
+      Batch ini belum ditandai recall. Bila BPOM menandainya, seluruh mutasi setelah tanggal recall ditolak kontrak.</div>
+  </aside>
+</main>
+</body></html>

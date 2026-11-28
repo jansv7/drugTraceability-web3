@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>Peta Jalur Distribusi</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --enamel:#101d3a; --enamel2:#16264a; --porcelain:#f4f6fa; --tick:#c9d4e6;
+    --line-a:#e0403a; --line-b:#2f6ee0; --line-c:#f0a92c; --line-d:#2e9e63;
+    --ink:#111820; --paper:#ffffff; --sans:"Bahnschrift","DIN Alternate","Segoe UI",system-ui,sans-serif;
+    --num:"Cascadia Mono",Consolas,monospace;
+  }
+  body{width:1440px;height:900px;overflow:hidden;background:var(--enamel);color:var(--ink);font-family:var(--sans);font-size:13.5px}
+  header{height:60px;display:flex;align-items:center;gap:30px;padding:0 30px;border-bottom:2px solid var(--enamel2)}
+  .brand{color:var(--porcelain);display:flex;align-items:baseline;gap:11px}
+  .brand b{font-size:17px;letter-spacing:.04em;text-transform:uppercase}
+  .brand i{font-style:normal;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#93a6c8}
+  header nav{display:flex;gap:24px;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:#93a6c8}
+  header nav b{color:#fff;font-weight:640}
+  .wallet{margin-left:auto;font-family:var(--num);font-size:12px;color:var(--porcelain);
+    border:1px solid #2b3d63;padding:5px 12px;display:flex;gap:9px;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:#5fd39a}
+  .wrap{display:grid;grid-template-columns:1fr 344px;height:840px}
+  .map{position:relative;padding:22px 26px 0;color:var(--porcelain)}
+  .map h1{font-size:20px;letter-spacing:.01em;font-weight:640;color:#fff}
+  .legend{position:absolute;top:22px;right:26px;display:flex;gap:18px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a6c8}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .legend i{width:20px;height:4px;display:block}
+  .net{position:absolute;left:26px;top:78px;width:1030px;height:470px}
+  .station{position:absolute;background:var(--enamel);border:1.5px solid var(--porcelain);padding:7px 11px;
+    font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap}
+  .station small{display:block;font-family:var(--num);font-size:9.5px;color:#93a6c8;font-weight:400;letter-spacing:.04em}
+  .hub{border-width:3px;border-radius:20px;padding:9px 15px}
+  .badge{display:inline-block;font-family:var(--num);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 7px;margin-left:8px;vertical-align:2px}
+  .b-ok{background:#1d5c3f;color:#c9f0dc} .b-bad{background:#7c221c;color:#ffd7d3} .b-warn{background:#7a5309;color:#ffe9bd}
+  .stops{position:absolute;left:26px;right:26px;bottom:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .stop{background:var(--paper);padding:0}
+  .stop .hd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #dfe4ee}
+  .stop .hd b{font-size:13.5px;letter-spacing:.02em}
+  .stop .code{margin-left:auto;font-family:var(--num);font-size:11px;color:#5b6675}
+  .stop .bd{padding:11px 14px;font-size:12.5px;color:#3d4657;line-height:1.5}
+  .stop .bd .k{font-family:var(--num);font-size:11.5px;color:var(--ink)}
+  aside{border-left:2px solid var(--enamel2);background:var(--paper);display:flex;flex-direction:column}
+  aside .hd{padding:20px 22px 14px;border-bottom:1px solid #dfe4ee}
+  aside .hd .t{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#68748a}
+  aside .hd h2{font-size:19px;margin-top:5px;font-weight:640}
+  aside .hd p{font-size:12px;color:#5b6675;margin-top:5px;line-height:1.5}
+  .journey{padding:16px 22px;border-bottom:1px solid #eef1f6}
+  .leg{display:grid;grid-template-columns:16px 1fr;gap:11px;padding:9px 0}
+  .leg .rail{position:relative}
+  .leg .rail::before{content:"";position:absolute;left:6px;top:3px;bottom:-13px;width:4px;background:var(--c)}
+  .leg .rail .node{position:absolute;left:2.5px;top:3px;width:11px;height:11px;border-radius:50%;
+    background:var(--paper);border:3px solid var(--c)}
+  .leg .who{font-size:13px;font-weight:620}
+  .leg .m{font-family:var(--num);font-size:10.5px;color:#68748a;margin-top:1px}
+  .cta{margin:auto 22px 20px;display:grid;gap:8px}
+  .btn{display:block;text-align:center;background:var(--enamel);color:#fff;font-size:12px;letter-spacing:.11em;
+    text-transform:uppercase;padding:11px;text-decoration:none;font-weight:620}
+  .btn.alt{background:var(--paper);color:var(--enamel);border:1.5px solid var(--enamel)}
+</style></head><body>
+<header>
+  <div class="brand"><b>DrugTraceability</b><i>Rantai Pasok Farmasi</i></div>
+  <nav><b>Peta jalur</b><span>Aktor</span><span>Recall</span><span>Log</span></nav>
+  <div class="wallet"><span class="dot"></span>0x7099…79C8 · PABRIK</div>
+</header>
+<div class="wrap">
+  <div class="map">
+    <h1>Jalur distribusi · PARA-2026-001</h1>
+    <div class="legend">
+      <span><i style="background:var(--line-a)"></i>Batch aktif</span>
+      <span><i style="background:var(--line-b)"></i>Custody</span>
+      <span style="color:#7c221c"><i style="background:#e0403a"></i>Recall</span>
+    </div>
+    <svg class="net" viewBox="0 0 1030 470" fill="none">
+      <path d="M120 330 L120 210 L430 210" stroke="#2f6ee0" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M430 210 L700 210 L700 96" stroke="#2f6ee0" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M430 210 L430 380 L860 380" stroke="#e0403a" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M120 330 L120 430" stroke="#f0a92c" stroke-width="9" stroke-linecap="round"/>
+      <path d="M700 210 L930 210 L930 330" stroke="#2e9e63" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="120" cy="330" r="15" fill="#101d3a" stroke="#f4f6fa" stroke-width="4"/>
+      <circle cx="430" cy="210" r="19" fill="#101d3a" stroke="#f4f6fa" stroke-width="4"/>
+      <circle cx="430" cy="210" r="11" fill="#f4f6fa"/>
+      <circle cx="700" cy="210" r="15" fill="#101d3a" stroke="#f4f6fa" stroke-width="4"/>
+      <circle cx="700" cy="96" r="13" fill="#101d3a" stroke="#2e9e63" stroke-width="4"/>
+      <circle cx="930" cy="330" r="13" fill="#101d3a" stroke="#e0403a" stroke-width="4"/>
+      <circle cx="860" cy="380" r="13" fill="#101d3a" stroke="#e0403a" stroke-width="4"/>
+      <circle cx="120" cy="430" r="11" fill="#101d3a" stroke="#f0a92c" stroke-width="4"/>
+    </svg>
+    <div class="station" style="left:44px;top:290px">Pabrik<small>0x7099…79C8 · pencatat</small></div>
+    <div class="station hub" style="left:352px;top:170px">Gudang PBF<small>0x3C44…93BC · serah terima</small></div>
+    <div class="station" style="left:624px;top:170px">Apotek<small>0x90F7…b906 · pemegang akhir</small></div>
+    <div class="station" style="left:624px;top:56px">Karantina<span class="badge b-bad">RECALL</span><small>AMOX-2026-014</small></div>
+    <div class="station" style="left:854px;top:290px">Rumah sakit<small>belum terhubung</small></div>
+    <div class="station" style="left:44px;top:390px">BPOM<small>regulator · 0xf39F…2266</small></div>
+    <div class="stops">
+      <div class="stop"><div class="hd"><b>Berlaku</b><span class="code">3 batch</span></div>
+        <div class="bd">Masih dalam masa edar. Pemegang tercatat: <span class="k">0x90F7…b906</span>, <span class="k">0x3C44…93BC</span>, <span class="k">0x7099…79C8</span>.</div></div>
+      <div class="stop"><div class="hd"><b>Recall</b><span class="code">1 batch</span></div>
+        <div class="bd">AMOX-2026-014 ditarik 21 Nov 2026. Mutasi lanjutan ditolak kontrak.</div></div>
+      <div class="stop"><div class="hd"><b>Titik jaringan</b><span class="code">4 aktor</span></div>
+        <div class="bd">Belum semua titik terpakai. Rumah sakit belum didaftarkan oleh BPOM.</div></div>
+    </div>
+  </div>
+  <aside>
+    <div class="hd"><div class="t">Perjalanan tercatat</div><h2>PARA-2026-001</h2>
+      <p>NIE DKI123456789 · serial SN-PR-0001 · 2 perpindahan</p></div>
+    <div class="journey">
+      <div class="leg" style="--c:#2f6ee0"><div class="rail"><span class="node"></span></div>
+        <div><div class="who">Pabrik mencatat batch</div><div class="m">blok 12 · 21 Nov 2026 11.29</div></div></div>
+      <div class="leg" style="--c:#2f6ee0"><div class="rail"><span class="node"></span></div>
+        <div><div class="who">Serah terima ke Gudang PBF</div><div class="m">blok 13 · 21 Nov 2026 11.29</div></div></div>
+      <div class="leg" style="--c:#e0403a"><div class="rail"><span class="node"></span></div>
+        <div><div class="who">Diteruskan ke Apotek</div><div class="m">blok 13 · 21 Nov 2026 11.29</div></div></div>
+    </div>
+    <div class="cta">
+      <a class="btn">Pindahkan custody</a>
+      <a class="btn alt">Periksa batch lain</a>
+    </div>
+  </aside>
+</div>
+</body></html>

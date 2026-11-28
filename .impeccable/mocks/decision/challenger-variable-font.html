@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>Spesimen Angka &amp; Kode</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --paper:#f8f7f4; --ink:#141414; --ink2:#5f5f5c; --rule:#dedcd4; --accent:#0f6b63;
+    --sans:"Bahnschrift","DIN Alternate","Segoe UI",system-ui,sans-serif;
+    --num:"Cascadia Mono",Consolas,monospace;
+  }
+  body{width:1440px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px}
+  header{height:56px;display:flex;align-items:center;gap:26px;padding:0 30px;border-bottom:1px solid var(--rule)}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand b{font-size:16px;letter-spacing:.05em;text-transform:uppercase}
+  .brand i{font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink2)}
+  nav{display:flex;gap:24px;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink2)}
+  nav b{color:var(--ink);font-weight:640;border-bottom:2px solid var(--accent);padding-bottom:3px}
+  .wallet{margin-left:auto;font-family:var(--num);font-size:12px;color:var(--ink2)}
+  .hero{padding:26px 30px 0;border-bottom:1px solid var(--rule)}
+  .hero .lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
+  .hash{font-family:var(--num);font-size:44px;line-height:1.12;letter-spacing:-.01em;margin-top:8px;word-break:break-all;max-width:1180px}
+  .hash b{color:var(--accent);font-weight:600}
+  .scale{display:flex;gap:2px;margin:16px 0 14px;align-items:flex-end;height:26px}
+  .scale span{flex:1;background:#e6e4dc;height:5px}
+  .scale span.on{background:var(--accent);height:26px}
+  .hero .foot{display:flex;gap:34px;font-size:12px;color:var(--ink2);padding-bottom:16px}
+  .hero .foot b{color:var(--ink);font-family:var(--num)}
+  main{display:grid;grid-template-columns:1fr 372px;height:603px}
+  .list{padding:22px 30px 0}
+  .list .cap{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .list h2{font-size:15px;font-weight:640}
+  .list .cap span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink2);text-align:left;
+    padding:0 10px 8px;border-bottom:1.5px solid var(--ink);font-weight:640}
+  td{padding:11px 10px;border-bottom:1px solid var(--rule);font-size:13px}
+  td.num{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:12.5px;text-align:right}
+  td.num.l{text-align:left}
+  .len{display:inline-block;width:52px;height:5px;background:#dcdad2;margin-right:8px;vertical-align:2px;position:relative}
+  .len i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);display:block}
+  .tag{font-family:var(--num);font-size:10px;letter-spacing:.08em;border:1px solid var(--rule);padding:2px 6px;color:var(--ink2)}
+  .tag.bad{border-color:#b3261e;color:#b3261e;border-width:1.5px;font-weight:700}
+  aside{border-left:1px solid var(--rule);padding:22px 26px 0}
+  aside h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin-bottom:13px}
+  .kv{display:grid;grid-template-columns:96px 1fr;gap:8px 10px;font-size:12.5px}
+  .kv dt{color:var(--ink2);font-size:11px;padding-top:1px}
+  .kv dd{font-family:var(--num);font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+  .ruler{margin-top:24px}
+  .ruler .line{height:22px;border-left:1px solid var(--ink);border-right:1px solid var(--ink);position:relative}
+  .ruler .line::after{content:"";position:absolute;inset:9px 0;border-top:1px solid var(--rule)}
+  .ruler .marks{display:flex;justify-content:space-between;font-family:var(--num);font-size:9.5px;color:var(--ink2);margin-top:4px}
+  .ruler .pin{position:absolute;top:0;bottom:0;left:74%;width:2px;background:var(--accent)}
+  .entries{margin-top:24px}
+  .entry{display:flex;justify-content:space-between;font-family:var(--num);font-size:11px;
+    padding:8px 0;border-bottom:1px solid var(--rule);color:var(--ink2)}
+  .entry b{color:var(--ink);font-weight:600}
+</style></head><body>
+<header>
+  <div class="brand"><b>DrugTraceability</b><i>Rantai Pasok Farmasi</i></div>
+  <nav><b>Periksa Batch</b><span>Dashboard</span><span>Aktor</span><span>Log</span></nav>
+  <div class="wallet">0x7099…79C8 · PABRIK</div>
+</header>
+<div class="hero">
+  <div class="lbl">Batch ID · hasil computeBatchId()</div>
+  <div class="hash">0xb36414a5106d3d651472dd50<b>59fc7a31444ab64</b>273a5a44e85c68a861156ff4a</div>
+  <div class="scale">
+    <span></span><span></span><span class="on"></span><span></span><span></span><span class="on"></span>
+    <span></span><span></span><span></span><span class="on"></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="foot"><span>Panjang <b>66</b> karakter</span><span>Kode batch <b>PARA-2026-001</b></span>
+    <span>NIE <b>DKI123456789</b></span><span>Serial <b>SN-PR-0001</b></span>
+    <span>Dicatat blok <b>12</b></span></div>
+</div>
+<main>
+  <div class="list">
+    <div class="cap"><h2>Deret batch</h2><span>Lebar digit tetap · koma sejajar</span></div>
+    <table>
+      <thead><tr><th style="width:150px">Kode batch</th><th style="width:150px">NIE</th><th style="width:140px">Serial</th>
+        <th class="num">Kedaluwarsa</th><th class="num">Blok</th><th style="width:120px">Status</th></tr></thead>
+      <tbody>
+        <tr><td>PARA-2026-001</td><td class="num l">DKI123456789</td><td class="num l">SN-PR-0001</td>
+          <td class="num">20-11-2028</td><td class="num">12</td><td><span class="tag">Berlaku</span></td></tr>
+        <tr><td>PARA-2026-002</td><td class="num l">DKI123456789</td><td class="num l">SN-PR-0002</td>
+          <td class="num">20-11-2028</td><td class="num">12</td><td><span class="tag">Berlaku</span></td></tr>
+        <tr><td>AMOX-2026-014</td><td class="num l">DKI998877665</td><td class="num l">SN-AM-0014</td>
+          <td class="num">21-11-2027</td><td class="num">11</td><td><span class="tag bad">Recall</span></td></tr>
+        <tr><td>VITA-2026-003</td><td class="num l">DKI554433221</td><td class="num l">SN-VT-0003</td>
+          <td class="num">20-11-2029</td><td class="num">12</td><td><span class="tag">Berlaku</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <aside>
+    <h3>Identitas batch</h3>
+    <dl class="kv">
+      <dt>Panjang hash</dt><dd>66</dd>
+      <dt>Panjang NIE</dt><dd>12</dd>
+      <dt>Panjang serial</dt><dd>10</dd>
+      <dt>Perpindahan</dt><dd>2</dd>
+      <dt>Blok terakhir</dt><dd>13</dd>
+    </dl>
+    <div class="ruler">
+      <h3 style="margin-bottom:8px">Masa berlaku</h3>
+      <div class="line"><span class="pin"></span></div>
+      <div class="marks"><span>22-10-26</span><span>hari ini</span><span>20-11-28</span></div>
+    </div>
+    <div class="entries">
+      <h3>Entri kode</h3>
+      <div class="entry"><span>BatchRegistered</span><b>blok 12</b></div>
+      <div class="entry"><span>CustodyTransferred</span><b>blok 13</b></div>
+      <div class="entry"><span>CustodyTransferred</span><b>blok 13</b></div>
+    </div>
+  </aside>
+</main>
+</body></html>

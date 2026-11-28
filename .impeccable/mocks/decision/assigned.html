@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>Rak &amp; Label Apotek</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ground:#f2f1ec; --label:#fffefb; --print:#151a1f; --print-2:#5b646d;
+    --rail:#16324f; --rail-ink:#e8eef5; --strip:#d9d3c4;
+    --seal-ok:#1c6b4c; --seal-bad:#b8312a; --seal-warn:#9a6410;
+    --sans:"Bahnschrift","DIN Alternate","Segoe UI",system-ui,sans-serif;
+    --num:"Cascadia Mono",Consolas,monospace;
+  }
+  body{width:1440px;height:900px;overflow:hidden;background:var(--ground);color:var(--print);font-family:var(--sans);font-size:14px}
+  .top{height:56px;background:var(--rail);color:var(--rail-ink);display:flex;align-items:center;padding:0 28px;gap:34px}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand b{font-size:17px;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+  .brand i{font-style:normal;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.62}
+  nav{display:flex;gap:26px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+  nav a{color:inherit;text-decoration:none;opacity:.66}
+  nav a.on{opacity:1;border-bottom:2px solid #fff;padding-bottom:3px}
+  .wallet{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:12px;font-family:var(--num);
+    border:1px solid rgba(255,255,255,.28);padding:5px 12px 5px 9px;border-radius:2px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#7fd6a9}
+  .rule{height:3px;background:var(--strip)}
+  .wrap{display:grid;grid-template-columns:1fr 372px;gap:0;height:844px}
+  .main{padding:26px 30px 0 28px}
+  .h1{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+  h1{font-size:29px;line-height:1.06;letter-spacing:-.012em;font-weight:640;max-width:23ch}
+  .h1 .meta{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--print-2);text-align:right;line-height:1.7}
+  .shelf{display:flex;align-items:center;gap:12px;background:var(--strip);padding:6px 12px;margin-bottom:0;border:1px solid #c8c2b2;border-bottom:0}
+  .shelf b{font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:660}
+  .shelf span{margin-left:auto;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#635c4c}
+  .panel{background:var(--label);border:1px solid #cdc7b8;border-radius:2px}
+  .panel .body{padding:15px 14px 16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--print-2);text-align:left;
+    padding:0 6px 7px;border-bottom:1.5px solid var(--print);font-weight:660;white-space:nowrap}
+  td{padding:9px 6px;border-bottom:1px solid #e3ded1;vertical-align:middle}
+  td.n{font-family:var(--num);font-size:12px;font-variant-numeric:tabular-nums}
+  tr.rec td{background:#fdf1ef}
+  .seal{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.03em;white-space:nowrap}
+  .seal i{width:19px;height:19px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;
+    font-style:normal;font-size:9px;font-weight:700;letter-spacing:0}
+  .seal i.f{background:currentColor}
+  .seal i.f::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--label);display:block}
+  .ok{color:var(--seal-ok)} .bad{color:var(--seal-bad)} .warn{color:var(--seal-warn)}
+  .tight{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--print-2)}
+  .btn{display:inline-block;background:var(--rail);color:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 16px;border-radius:2px;text-decoration:none;font-weight:600}
+  .side{border-left:1px solid #cdc7b8;background:#eeece4;padding:26px 24px}
+  .side h2{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#635c4c;margin-bottom:12px}
+  .stop{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid #dbd5c5}
+  .stop .n{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--rail);color:var(--rail);
+    display:grid;place-items:center;font-family:var(--num);font-size:10px;font-weight:700}
+  .stop .t{font-size:13px;font-weight:600;line-height:1.3}
+  .stop .m{font-family:var(--num);font-size:10.5px;color:var(--print-2);margin-top:2px}
+  .note{margin-top:18px;border:1px solid #c8c2b2;background:var(--label);padding:12px}
+  .note b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--print-2);margin-bottom:6px}
+  .note p{font-size:12px;line-height:1.55;color:#3a4149}
+</style></head><body>
+<div class="top">
+  <div class="brand"><b>DrugTraceability</b><i>Rantai Pasok Farmasi</i></div>
+  <nav><a class="on">Dashboard</a><a>Verifikasi Obat</a><a>Aktor</a><a>Log</a></nav>
+  <div class="wallet"><span class="dot"></span>0x7099…79C8 · PABRIK</div>
+</div>
+<div class="rule"></div>
+<div class="wrap">
+  <div class="main">
+    <div class="h1">
+      <h1>Batch yang saya daftarkan</h1>
+      <div class="meta">Kontrak 0x5FbD…0aa3<br>Hardhat Local · 31337<br>Blok terakhir 18</div>
+    </div>
+    <div class="panel grid2" style="padding:0;background:transparent;border:0;gap:16px">
+      <div class="panel"><div class="body" style="display:flex;gap:22px;align-items:baseline">
+        <div><div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#5b646d">Batch aktif</div>
+          <div class="n" style="font-size:31px;line-height:1.1">3</div></div>
+        <div><div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#5b646d">Recall</div>
+          <div class="n" style="font-size:31px;line-height:1.1;color:#b8312a">1</div></div>
+        <div><div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#5b646d">Aktor</div>
+          <div class="n" style="font-size:31px;line-height:1.1">4</div></div>
+      </div></div>
+      <div class="panel"><div class="body">
+        <div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#5b646d">Batch terakhir dicatat</div>
+        <div style="font-size:15px;font-weight:620;margin-top:5px">PARA-2026-001 <span class="n" style="font-weight:400;color:#5b646d">· SN-PR-0001</span></div>
+        <div class="tight" style="margin-top:4px">Didaftarkan 21 Nov 2026 · 2 perpindahan · kini di Apotek</div>
+      </div></div>
+    </div>
+
+    <div class="shelf"><b>Daftar batch</b><span>Disaring dari event BatchRegistered</span></div>
+    <div class="panel" style="border-top:0">
+      <table>
+        <thead><tr><th>Kode batch</th><th>NIE</th><th>Serial</th><th>Status</th><th>Pemegang kini</th><th>Kedaluwarsa</th></tr></thead>
+        <tbody>
+          <tr><td>PARA-2026-001</td><td class="n">DKI123456789</td><td class="n">SN-PR-0001</td>
+            <td><span class="seal ok"><i></i>Berlaku</span></td><td class="n">0x90F7…b906</td><td class="n">20 Nov 2028</td></tr>
+          <tr><td>PARA-2026-002</td><td class="n">DKI123456789</td><td class="n">SN-PR-0002</td>
+            <td><span class="seal ok"><i></i>Berlaku</span></td><td class="n">0x3C44…93BC</td><td class="n">20 Nov 2028</td></tr>
+          <tr class="rec"><td>AMOX-2026-014</td><td class="n">DKI998877665</td><td class="n">SN-AM-0014</td>
+            <td><span class="seal bad"><i class="f"></i>Recall</span></td><td class="n">0x3C44…93BC</td><td class="n">21 Nov 2027</td></tr>
+          <tr><td>VITA-2026-003</td><td class="n">DKI554433221</td><td class="n">SN-VT-0003</td>
+            <td><span class="seal ok"><i></i>Berlaku</span></td><td class="n">0x7099…79C8</td><td class="n">20 Nov 2029</td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-top:1px solid #e3ded1">
+        <span class="tight">4 batch · diperiksa ulang dengan <span class="n">batches()</span></span>
+        <span class="btn">Registrasi batch</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <h2>Jejak custody</h2>
+    <div class="stop"><div class="n">1</div><div><div class="t">Pabrik mencatat batch</div>
+      <div class="m">0x7099…79C8 · 21 Nov 2026 11.29</div></div></div>
+    <div class="stop"><div class="n">2</div><div><div class="t">Diserahkan ke distributor</div>
+      <div class="m">0x3C44…93BC · 21 Nov 2026 11.29</div></div></div>
+    <div class="stop"><div class="n" style="border-style:dashed">3</div><div><div class="t">Diteruskan ke apotek</div>
+      <div class="m">0x90F7…b906 · 21 Nov 2026 11.29</div></div></div>
+    <div class="note"><b>Status ditetapkan kontrak</b>
+      <p>Batch <span class="n">AMOX-2026-014</span> tidak dapat dipindahtangankan lagi sejak ditandai recall oleh BPOM.</p></div>
+    <div class="note" style="background:#f7f5ee"><b>Kode status</b>
+      <p style="display:flex;gap:14px;flex-wrap:wrap">
+        <span class="seal ok"><i></i>Berlaku</span>
+        <span class="seal warn"><i class="f"></i>Kedaluwarsa</span>
+        <span class="seal bad"><i class="f"></i>Recall</span></p></div>
+  </aside>
+</div>
+</body></html>

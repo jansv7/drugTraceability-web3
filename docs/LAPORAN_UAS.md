@@ -106,7 +106,25 @@ Berkas yang membentuk aplikasi:
 
 ---
 
-## 4. Implementasi
+## 4. Antarmuka: arah visual dan alasan pemilihannya
+
+Pengembangan UAS ini melakukan remake tampilan, bukan sekadar menambah halaman. Sebelum menulis kode,
+dilakukan satu putaran pemilihan arah visual dengan empat kandidat, dan arah yang dipilih adalah
+**Kartu Stok Apotek**: setiap catatan batch diperlakukan sebagai lembar kartu stok gudang.
+
+Bentuknya: kepala kartu berisi identitas batch dan segel tanggal kedaluwarsa yang ditempel miring,
+badan berisi bilah masa edar dan kolom fakta bernomor, tabel mutasi dengan kolom masuk, keluar, dan
+saldo pemegang serta nomor blok di kolom paling kanan, lalu kaki tiga kolom tanda tangan yang isinya
+alamat wallet pendaftar, nama modifier kontrak yang memeriksa, dan jumlah perpindahan tercatat.
+
+Alasan arah ini dipilih: penguji langsung mengenali polanya, karena kartu stok adalah dokumen yang
+memang dipakai di gudang farmasi. Ia juga memaksa dua hal yang penting bagi penilaian, yaitu setiap
+angka wajib berasal dari ledger (karena kolom blok harus terisi), dan setiap penolakan kontrak wajib
+ditampilkan apa adanya (karena itulah tanda tangan kontrak pada baris tersebut).
+
+Ketentuan tampilan yang berlaku di seluruh halaman: tema terang saja, sudut 0px pada semua komponen,
+tanpa bayangan pada lembar data, dan angka memakai huruf monospace berlebar digit tetap. Sistem desain
+lengkapnya dicatat pada `DESIGN.md`, dan token mesinnya pada `.impeccable/design.json`.
 
 ### 4.1 Antarmuka menurut peran
 
@@ -137,7 +155,7 @@ Bila transaksi ditolak kontrak, pesan `require()` diterjemahkan menjadi kalimat 
 misalnya "Batch berstatus recall, tidak dapat dipindahtangankan". Bila pengguna membatalkan transaksi
 pada wallet, muncul notifikasi bahwa transaksi dibatalkan.
 
-### 4.3 Halaman verifikasi publik
+### 4.3 Halaman pemeriksaan publik
 
 Halaman ini menjadi jawaban atas kebutuhan pasien untuk memeriksa obat. Dua cara pencarian disediakan:
 memasukkan NIE, kode batch, dan nomor serial sebagaimana tercetak pada kemasan (Batch ID dihitung
@@ -189,38 +207,43 @@ tambahan untuk kasus yang belum tercakup.
 | 14 | Batch dengan kombinasi NIE/kode batch/serial sama didaftarkan dua kali | Transaksi ditolak | Lulus |
 | 15 | Transfer batch yang tidak pernah didaftarkan | Transaksi ditolak | Lulus |
 
-Hasil eksekusi: **9 blok pengujian, 15 skenario, seluruhnya lulus.**
+Hasil eksekusi: **15 pengujian, seluruhnya lulus** (`15 passing`).
 
 ### 5.2 Pengujian antarmuka dengan beberapa wallet
 
-Pengujian ini dilakukan pada jaringan lokal dengan akun berbeda untuk setiap peran, dan salah satu
-akun sengaja dibiarkan tanpa role.
+Pengujian ini dijalankan pada jaringan Hardhat lokal dengan wallet berbeda untuk setiap peran, dan
+satu akun sengaja dibiarkan tanpa peran. Hasil yang dicatat di bawah adalah keluaran nyata dari
+pengujian, bukan perkiraan.
 
-| No | Skenario | Hasil yang diamati | Status |
-|---|---|---|---|
-| 1 | Membuka dashboard tanpa wallet | Muncul penjelasan bahwa MetaMask diperlukan, menu tidak ditampilkan | Sesuai |
-| 2 | Wallet terhubung tetapi belum menyetujui koneksi | Muncul tombol hubungkan wallet dan alamat kontrak yang akan dituju | Sesuai |
-| 3 | Wallet pada jaringan yang belum dikonfigurasi | Muncul peringatan jaringan, transaksi dinonaktifkan, tersedia tombol pindah jaringan | Sesuai |
-| 4 | Wallet tanpa role | Diarahkan ke layar pengajuan pendaftaran aktor, bukan dashboard | Sesuai |
-| 5 | Pabrik mendaftarkan batch baru | Transaksi berhasil, nomor blok tampil, batch muncul pada daftar | Sesuai |
-| 6 | Verifikasi batch melalui data kemasan | Batch ID dihitung kontrak, hasil verifikasi tampil lengkap | Sesuai |
-| 7 | Verifikasi batch berstatus recall | Status recall dan alasannya ditampilkan menonjol | Sesuai |
-| 8 | Verifikasi Batch ID yang tidak ada | Pesan bahwa batch tidak ditemukan pada kontrak | Sesuai |
-| 9 | Transfer ke aktor belum terdaftar | Peringatan pada kolom alamat sebelum kirim, transaksi ditolak kontrak | Sesuai |
-| 10 | Transfer kepada aktor terdaftar | Pemegang batch berubah, riwayat bertambah satu perpindahan | Sesuai |
-| 11 | Transfer batch yang sudah recall | Transaksi ditolak dengan pesan dari kontrak | Sesuai |
-| 12 | Regulator mendaftarkan aktor baru | Role terbaca pada akun tujuan, daftar aktor bertambah | Sesuai |
-| 13 | Regulator mendaftarkan aktor dari daftar permintaan | Status permintaan berubah menjadi terdaftar | Sesuai |
-| 14 | Pabrik membuka pratinjau recall atas batch pabrik lain | Muncul peringatan bahwa wallet tidak berwenang | Sesuai |
-| 15 | Tampilan pada layar ponsel 390x844 dan tablet 768x1024 | Tidak ada gulir horizontal, navigasi berubah menjadi menu lipat | Sesuai |
+| Uji | Cara | Hasil |
+|---|---|---|
+| Pemisahan menu menurut peran | Menghubungkan tiap akun bergantian, membaca menu yang terbentuk | Pabrik mendapat 6 menu, Distributor dan Apotek 4, BPOM 4, akun tanpa peran tidak mendapat menu operasional |
+| Akun tanpa peran | Menghubungkan akun ke-5 dan ke-6 | Muncul pemberitahuan bahwa wallet belum berperan, beserta cara mengajukan permintaan ke BPOM |
+| Registrasi batch | Pabrik mengisi formulir lalu mengirim transaksi | Blok bertambah 15 ke 16, `registerBatch()` tercatat, data terbaca kembali dari kontrak |
+| Perpindahan custody | Pabrik memindahkan batch ke wallet Distributor | Blok bertambah ke 17, pemegang berubah menjadi Distributor, `getTransferHistory()` berisi satu catatan |
+| Penarikan batch | BPOM mengisi Batch ID dan alasan, lalu mengonfirmasi dialog | Blok bertambah ke 18, status recall benar, alasan tersimpan pada ledger |
+| Transfer batch recall | Distributor mencoba memindahkan batch yang sudah recall | Kontrak menolak: "Batch berstatus recall, tidak dapat dipindahtangankan", dan tidak ada blok baru |
+| Verifikasi publik tanpa wallet | Membuka halaman Periksa Batch melalui URL berisi Batch ID | Kartu batch tampil lengkap tanpa perlu wallet |
+| Kolom kosong | Menekan tombol transaksi tanpa mengisi Batch ID | Aplikasi menolak lebih dahulu dengan pesan pada kolom yang bersangkutan |
+| Konsol peramban | Membuka lima halaman | Tidak ada galat JavaScript pada seluruh halaman |
+
+Pengujian pemisahan peran dijalankan ulang setelah tampilan diganti, untuk memastikan arah visual baru
+tidak mengubah hak akses.
 
 ### 5.3 Temuan yang diperbaiki selama pengujian
 
 | Temuan | Perbaikan |
 |---|---|
 | Alamat wallet dengan huruf besar/kecil tidak konsisten ditolak wallet dengan pesan "bad address checksum" | Seluruh alamat dari masukan pengguna dinormalkan sebelum dikirim ke kontrak |
+| Pesan penolakan kontrak tampil sebagai "missing revert data" yang tidak menjelaskan apa pun | Ditambahkan simulasi `staticCall` sebelum mengirim transaksi, sehingga alasan asli dari `require()` selalu terbaca |
+| Kolom nomor blok pada tabel mutasi selalu kosong karena `getTransferHistory()` tidak mengembalikannya | Nomor blok diambil dari event `BatchRegistered`, `CustodyTransferred`, dan `BatchRecalled`, lalu dipasangkan pada baris yang sesuai |
+| Hash Batch ID membungkus sampai sembilan baris pada kolom sempit | Batch ID diberi satu baris penuh tersendiri dengan label dan tombol salin |
+| Halaman pemeriksaan memberi lebar besar pada formulir dan sempit pada hasil, sehingga hasil justru terhimpit | Ditambahkan varian tata letak `.cols.search`: formulir 372px, hasil memakai sisa lebar |
 | Tabel panjang melebarkan halaman pada layar ponsel | Tabel dibungkus wadah bergulir tersendiri dan lebar kolom grid dibatasi |
+| Teks fungsional berukuran 10,6 sampai 11,6 piksel, sulit dibaca saat diproyeksikan di kelas | Seluruh ukuran teks fungsional dinaikkan ke 12 piksel atau lebih; hal ini juga ditemukan oleh pemeriksa otomatis |
+| Judul dan keterangan pada daftar jejak menyatu dalam satu baris tanpa pemisah | Penanda daftar dibuat `display: block` sehingga judul dan keterangan terpisah |
 | Tautan QR berubah ketika salah satu kolom diubah | Tautan permanen dibentuk dari Batch ID, bukan dari data mentah |
+| Angka recall pada beranda tidak dijelaskan di tabel batch | Tabel beranda menampilkan batch bermasalah lebih dulu beserta alasan penarikannya |
 
 ---
 
@@ -283,21 +306,24 @@ disetujui terlebih dahulu.
 
 ## 8. Lampiran
 
-Tangkapan layar antarmuka tersimpan pada folder `docs/gambar/`:
+Tangkapan layar antarmuka tersimpan pada folder ``:
 
 | Berkas | Isi |
 |---|---|
-| `01-beranda.png` | Beranda: penjelasan sistem dan hak akses peran |
-| `02-verifikasi-publik.png` | Hasil verifikasi publik sebuah batch beserta riwayatnya |
-| `03-dashboard-pabrik.png` | Dashboard pabrik dengan daftar batch yang didaftarkan |
-| `04-dashboard-regulator.png` | Dashboard regulator: pendaftaran aktor dan recall |
-| `05-panduan.png` | Halaman panduan penggunaan dan pengujian |
-| `06-beranda-mobile.png` | Tampilan beranda pada layar ponsel |
+| `01-beranda.png` | Beranda: bilah angka jaringan, kartu batch terbaru, aturan kontrak, hak akses peran |
+| `02-periksa-batch.png` | Hasil pemeriksaan satu batch: kartu stok dengan tabel mutasi dan nomor blok |
+| `03-ruang-kerja.png` | Ruang kerja pabrik: daftar batch yang dicatat dan tindakan per baris |
+| `04-panduan.png` | Panduan penggunaan, daftar fungsi kontrak, dan daftar periksa pengujian |
+| `05-ruang-kerja-regulator.png` | Ruang kerja BPOM: pendaftaran aktor dan daftar aktor berperan |
+| `06-pengajuan-peran.png` | Halaman pengajuan peran beserta penjelasan bahwa pengajuan bukan transaksi |
+| `07-beranda-mobile.png` | Beranda pada layar ponsel 390px |
 
 Dokumen pendukung lain:
 
 | Berkas | Isi |
 |---|---|
+| `DESIGN.md` | Sistem desain lengkap: token warna, huruf, tata letak, bentuk, komponen, dan aturan |
 | `docs/AUDIT.md` | Hasil audit proyek UTS secara lengkap |
 | `docs/DEPLOY.md` | Panduan deployment lokal, Sepolia, dan publikasi online |
+| `docs/ALUR_DEMO.md` | Urutan demonstrasi untuk presentasi di kelas |
 | `README.md` | Ringkasan proyek dan perintah yang tersedia |
